@@ -289,7 +289,7 @@
 
 // action from the A button
 - (IBAction) hitAButton: (NSButton *) btn {
-    int val = 82;
+    int val = 45;
     write(serialFileDescriptor, (const void *) &val, 1);}
 
 
