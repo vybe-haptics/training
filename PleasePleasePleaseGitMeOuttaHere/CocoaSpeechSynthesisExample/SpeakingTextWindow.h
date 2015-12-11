@@ -18,6 +18,7 @@
 @property (weak) IBOutlet NSButton *d;
 @property (weak) IBOutlet NSButton *IH;
 @property (weak) IBOutlet NSButton *AX;
+@property(readonly, strong) NSMenuItem *selectedItem;
 
 @end
 

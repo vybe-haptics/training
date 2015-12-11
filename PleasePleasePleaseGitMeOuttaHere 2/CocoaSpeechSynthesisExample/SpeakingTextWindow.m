@@ -20,13 +20,16 @@
 
 @interface SpeakingTextWindow ()
 {
+    IBOutlet NSPopUpButtonCell *LevelSelector;
+    
     // Main window outlets
     IBOutlet NSWindow *fWindow;
-    IBOutlet NSTextView *fSpokenTextView;
     IBOutlet NSButton *fStartStopButton;
     IBOutlet NSButton *fPauseContinueButton;
     IBOutlet NSButton *fSaveAsFileButton;
-
+    IBOutlet NSTextView *fSpokenTextView;
+    
+    
     // Options panel outlets
     IBOutlet NSButton *fImmediatelyRadioButton;
     IBOutlet NSButton *fAfterWordRadioButton;
@@ -57,7 +60,48 @@
     IBOutlet NSButton *fHandleSpeechDoneCallbacksCheckboxButton;
     IBOutlet NSButton *fHandleTextDoneCallbacksCheckboxButton;
     IBOutlet SpeakingCharacterView *fCharacterView;
-
+    
+    //PhonemeButtons
+    
+    //Level1
+    IBOutlet NSButton *fAX;
+    IBOutlet NSButton *fIH;
+    IBOutlet NSButton *fIY;
+    IBOutlet NSButton *fDD;
+    IBOutlet NSButton *fNN;
+    IBOutlet NSButton *fRR;
+    IBOutlet NSButton *fSS;
+    IBOutlet NSButton *fTT;
+    
+    IBOutlet NSButton *fAX2;
+    IBOutlet NSButton *fd2;
+    IBOutlet NSButton *fIH2;
+    IBOutlet NSButton *fIY2;
+    IBOutlet NSButton *fn2;
+    IBOutlet NSButton *fr2;
+    IBOutlet NSButton *fs2;
+    IBOutlet NSButton *ft2;
+    
+    //NSArray *level1 = [[NSArray alloc]initWithObjects:fAX, fIH, fIY, fDD, fNN, fRR, fSS, fTT, fAX2, fd2, fIH2, fIY2, fn2, fr2, fs2, ft2, nil];
+    
+    //NSArray *level1nums = [[NSArray alloc]initWithObjects: 5, 8, 6, 20, 29, 32, 33, 35, nil];
+    
+    //Level2
+    IBOutlet NSButton *fIX;
+    IBOutlet NSButton *fl;
+    IBOutlet NSButton *fm;
+    IBOutlet NSButton *fAY;
+    
+    IBOutlet NSButton *fIX2;
+    IBOutlet NSButton *fl2;
+    IBOutlet NSButton *fm2;
+    IBOutlet NSButton *fAY2;
+    
+    //NSArray *level2 = [[NSArray alloc]initWithObjects:fIX, fl, fm, fAY, fIX2, fl2, fm2, fAY2, nil];
+    //NSArray *level2nums = [[NSArray alloc]initWithObjects: 10, 27, 28, 9, nil];
+    
+    
+    
     // Misc. instance variables
     NSRange fOrgSelectionRange;
     long fSelectedVoiceID;
@@ -73,6 +117,8 @@
     NSData *fTextData;
     NSString *fTextDataType;
     NSString *fErrorFormatString;
+  
+    
     
     //serial example code start
     IBOutlet NSPopUpButton *serialListPullDown;
@@ -84,11 +130,6 @@
     bool readThreadRunning;
     NSTextStorage *storage;
     //serial example code end
-    
-    
-    //
-    IBOutlet NSPopUpButton *levelListPullDown;
-
 }
 
 //serial example code start
@@ -157,6 +198,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 #pragma mark -
 
 @implementation SpeakingTextWindow
+
 
 // start serial example code
 
@@ -463,8 +505,6 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         nanosleep(&interval, &remainder); // wait 0.1 seconds
         ioctl(serialFileDescriptor, TIOCCDTR);
     }
-    NSLog(@"%d", serialFileDescriptor);
-
 }
 
 //end serial example code
@@ -1010,6 +1050,34 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
 } // pauseContinueButtonPressed
 
+
+- (IBAction)LevelPopupSelected:(id)sender {
+    //if ([LevelSelector titleOfSelectedItem] == @"Level 1") {
+
+    NSArray *level1 = [[NSArray alloc]initWithObjects:fAX, fIH, fIY, fDD, fNN, fRR, fSS, fTT, fAX2, fd2, fIH2, fIY2, fn2, fr2, fs2, ft2, nil];
+    
+    NSArray *level2 = [[NSArray alloc]initWithObjects:fIX, fl, fm, fAY, fIX2, fl2, fm2, fAY2, nil];
+    
+    
+    if ([LevelSelector indexOfSelectedItem] == 1) {
+        //NSLog(@"HELLO");
+        for (NSUInteger i = 0; i < [level1 count]; i++) {
+            [[level1 objectAtIndex:i] setEnabled: YES];
+        }
+    }
+    if ([LevelSelector indexOfSelectedItem] == 2) {
+        //NSLog(@"HELLO2");
+        for (NSUInteger i = 0; i < [level2 count]; i++) {
+            [[level2 objectAtIndex:i] setEnabled: YES];
+        }
+        for (NSUInteger i = 0; i < [level1 count]; i++) {
+            [[level1 objectAtIndex:i] setEnabled: YES];
+        }
+    //long LevelIndex = [sender indexOfSelectedItem];
+    //NSLog(@"%d", LevelIndex);
+    }}
+
+
 /*----------------------------------------------------------------------------------------
  voicePopupSelected:
 
@@ -1440,6 +1508,17 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
  ----------------------------------------------------------------------------------------*/
 - (void)awakeFromNib {
     
+    NSArray *level1 = [[NSArray alloc]initWithObjects:fAX, fIH, fIY, fDD, fNN, fRR, fSS, fTT, fAX2, fd2, fIH2, fIY2, fn2, fr2, fs2, ft2, nil];
+    
+    NSArray *level2 = [[NSArray alloc]initWithObjects:fIX, fl, fm, fAY, fIX2, fl2, fm2, fAY2, nil];
+    for (NSUInteger i = 0; i < [level1 count]; i++) {
+        [[level1 objectAtIndex:i] setEnabled: NO];
+        }
+    for (NSUInteger i = 0; i < [level2 count]; i++) {
+        //NSLog(@"haha");
+        [[level2 objectAtIndex:i] setEnabled: NO];}
+    
+
     
     //serial example code start
     // we don't have a serial port open yet
@@ -1616,13 +1695,90 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 
 - (void)setExpressionForPhoneme:(NSNumber *)phoneme {
-    int phonemeValue = [phoneme shortValue];
-    //uint8_t val= phonemeValue;
-    write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-    NSLog(@"%d", phonemeValue);
-    NSLog(@"%d", serialFileDescriptor);
+    
+    //NSArray *level2nums = [[NSArray alloc]initWithObjects: @10, @27, @28, @9, nil];
 
-}
+    int phonemeValue = [phoneme shortValue];
+    int level1nums[8] = {5, 8, 6, 20, 29, 32, 33, 35};
+    int level2nums[12] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9};
+    int level3nums[16] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26};
+    int level4nums[20] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24};
+    int level5nums[24] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31};
+    int level6nums[28] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18};
+    int level7nums[32] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34};
+    int level8nums[36] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34, 13, 23, 36, 39};
+    int level9nums[40] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34, 13, 23, 36, 39, 17,38,41};//19 (35,34),25 (20,41)
+ 
+
+
+
+    /*
+    //uint8_t val= phonemeValue;
+    //NSLog(@"%", sizeof(level1nums));
+*/
+    if ([LevelSelector indexOfSelectedItem] == 1) {
+        for (int i=0 ; i<8 ; i++){
+            if (level1nums[i] == phonemeValue){
+                NSLog(@"level 1 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }
+        }}
+    if ([LevelSelector indexOfSelectedItem] == 2) {
+        for (int i=0 ; i<12 ; i++){
+            if (level2nums[i] == phonemeValue){
+                NSLog(@"level 2 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }}}
+    if ([LevelSelector indexOfSelectedItem] == 3) {
+        for (int i=0 ; i<16 ; i++){
+            if (level3nums[i] == phonemeValue){
+                NSLog(@"level 3 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }
+        }}
+    if ([LevelSelector indexOfSelectedItem] == 4) {
+        for (int i=0 ; i<20 ; i++){
+            if (level4nums[i] == phonemeValue){
+                NSLog(@"level 4 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }
+        }}
+    if ([LevelSelector indexOfSelectedItem] == 5) {
+        for (int i=0 ; i<24 ; i++){
+            if (level5nums[i] == phonemeValue){
+                NSLog(@"level 5 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }
+        }}
+    if ([LevelSelector indexOfSelectedItem] == 6) {
+        for (int i=0 ; i<28 ; i++){
+            if (level6nums[i] == phonemeValue){
+                NSLog(@"level 6 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }
+        }}
+    if ([LevelSelector indexOfSelectedItem] == 7) {
+        for (int i=0 ; i<32 ; i++){
+            if (level7nums[i] == phonemeValue){
+                NSLog(@"level 7 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }
+        }}
+    if ([LevelSelector indexOfSelectedItem] == 8) {
+        for (int i=0 ; i<36 ; i++){
+            if (level8nums[i] == phonemeValue){
+                NSLog(@"level 8 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }
+        }}
+    if ([LevelSelector indexOfSelectedItem] == 9) {
+        for (int i=0 ; i<39 ; i++){
+            if (level9nums[i] == phonemeValue){
+                NSLog(@"level 9 phoneme %d", phonemeValue);
+                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            }}}
+
+    }
 
 
 
@@ -1660,6 +1816,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     [self startSpeakingButton:phon];
 }
 
+
 - (IBAction)IH:(id)sender {
     NSString *phon = @"IH";
     [self startSpeakingButton:phon];
@@ -1671,6 +1828,25 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     [self startSpeakingButton:phon];
 }
 
+- (IBAction)IX:(id)sender {
+    NSString *phon = @"IX";
+    [self startSpeakingButton:phon];
+}
+
+- (IBAction)l:(id)sender {
+    NSString *phon = @"l";
+    [self startSpeakingButton:phon];
+}
+
+- (IBAction)m:(id)sender {
+    NSString *phon = @"m";
+    [self startSpeakingButton:phon];
+}
+
+- (IBAction)AY:(id)sender {
+    NSString *phon = @"AY";
+    [self startSpeakingButton:phon];
+}
 
 - (void)startSpeakingButton:(NSString *)phon {
     SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModePhoneme);
@@ -1703,8 +1879,36 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //[self enableCallbackControlsBasedOnSavingToFileFlag:fSavingToFile];
 }
 
-
-
+- (void)startSpeakingWordButton:(NSString *)word {
+    SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModeText);
+    SetSpeechProperty(fCurSpeechChannel, kSpeechPhonemeCallBack,
+                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurPhonemeCallBackProc(<#SpeechChannel inSpeechChannel#>, <#SRefCon inRefCon#>, <#short inPhonemeOpcode#>))));
+    // Convert NSString to cString.
+    // We want the text view the active view.  Also saves any parameters currently being edited.
+    //[fWindow makeFirstResponder:fSpokenTextView];
+    SetSpeechProperty(fCurSpeechChannel,
+                      kSpeechSpeechDoneCallBack,
+                      (__bridge CFTypeRef)(@((long)OurSpeechDoneCallBackProc)));
+    SetSpeechProperty(fCurSpeechChannel, kSpeechTextDoneCallBack,
+                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurTextDoneCallBackProc)));
+    
+    SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)phon, NULL);
+    // if (noErr == theErr) {
+    // Update our vars
+    //fLastErrorCode = 0;
+    //fLastSpeakingValue = NO;
+    //fLastPausedValue = NO;
+    //fCurrentlySpeaking = YES;
+    //fCurrentlyPaused = NO;
+    //[self updateSpeakingControlState];
+    //} else {
+    //[self runAlertPanelWithTitle:@"SpeakText"
+    //                   message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
+    //            buttonTitles:@[@"Oh?"]];
+    //}
+    
+    //[self enableCallbackControlsBasedOnSavingToFileFlag:fSavingToFile];
+}
 
 @end
 
