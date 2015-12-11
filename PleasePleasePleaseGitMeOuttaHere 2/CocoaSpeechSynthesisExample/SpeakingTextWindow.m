@@ -1879,36 +1879,6 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //[self enableCallbackControlsBasedOnSavingToFileFlag:fSavingToFile];
 }
 
-- (void)startSpeakingWordButton:(NSString *)word {
-    SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModeText);
-    SetSpeechProperty(fCurSpeechChannel, kSpeechPhonemeCallBack,
-                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurPhonemeCallBackProc(<#SpeechChannel inSpeechChannel#>, <#SRefCon inRefCon#>, <#short inPhonemeOpcode#>))));
-    // Convert NSString to cString.
-    // We want the text view the active view.  Also saves any parameters currently being edited.
-    //[fWindow makeFirstResponder:fSpokenTextView];
-    SetSpeechProperty(fCurSpeechChannel,
-                      kSpeechSpeechDoneCallBack,
-                      (__bridge CFTypeRef)(@((long)OurSpeechDoneCallBackProc)));
-    SetSpeechProperty(fCurSpeechChannel, kSpeechTextDoneCallBack,
-                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurTextDoneCallBackProc)));
-    
-    SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)phon, NULL);
-    // if (noErr == theErr) {
-    // Update our vars
-    //fLastErrorCode = 0;
-    //fLastSpeakingValue = NO;
-    //fLastPausedValue = NO;
-    //fCurrentlySpeaking = YES;
-    //fCurrentlyPaused = NO;
-    //[self updateSpeakingControlState];
-    //} else {
-    //[self runAlertPanelWithTitle:@"SpeakText"
-    //                   message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
-    //            buttonTitles:@[@"Oh?"]];
-    //}
-    
-    //[self enableCallbackControlsBasedOnSavingToFileFlag:fSavingToFile];
-}
 
 @end
 
