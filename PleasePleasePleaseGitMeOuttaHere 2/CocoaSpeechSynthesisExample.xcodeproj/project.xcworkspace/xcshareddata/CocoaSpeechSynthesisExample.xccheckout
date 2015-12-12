@@ -14,7 +14,7 @@
 		<string>https://github.com/vybe-haptics/training.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>PleasePleasePleaseGitMeOuttaHere/CocoaSpeechSynthesisExample.xcodeproj</string>
+	<string>PleasePleasePleaseGitMeOuttaHere 2/CocoaSpeechSynthesisExample.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>BA8024FA39FFC4A0B2B46FE29F7583C833A40727</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>BA8024FA39FFC4A0B2B46FE29F7583C833A40727</string>
 			<key>IDESourceControlWCCName</key>
-			<string>training</string>
+			<string>HarmonyTraining</string>
 		</dict>
 	</array>
 </dict>

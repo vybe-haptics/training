@@ -21,6 +21,7 @@
 @interface SpeakingTextWindow ()
 {
     IBOutlet NSPopUpButtonCell *LevelSelector;
+    IBOutlet NSTabView *levelTab;
     
     // Main window outlets
     IBOutlet NSWindow *fWindow;
@@ -64,42 +65,17 @@
     //PhonemeButtons
     
     //Level1
-    IBOutlet NSButton *fAX;
-    IBOutlet NSButton *fIH;
-    IBOutlet NSButton *fIY;
-    IBOutlet NSButton *fDD;
-    IBOutlet NSButton *fNN;
-    IBOutlet NSButton *fRR;
-    IBOutlet NSButton *fSS;
-    IBOutlet NSButton *fTT;
-    
-    IBOutlet NSButton *fAX2;
-    IBOutlet NSButton *fd2;
-    IBOutlet NSButton *fIH2;
-    IBOutlet NSButton *fIY2;
-    IBOutlet NSButton *fn2;
-    IBOutlet NSButton *fr2;
-    IBOutlet NSButton *fs2;
-    IBOutlet NSButton *ft2;
-    
-    //NSArray *level1 = [[NSArray alloc]initWithObjects:fAX, fIH, fIY, fDD, fNN, fRR, fSS, fTT, fAX2, fd2, fIH2, fIY2, fn2, fr2, fs2, ft2, nil];
-    
-    //NSArray *level1nums = [[NSArray alloc]initWithObjects: 5, 8, 6, 20, 29, 32, 33, 35, nil];
-    
-    //Level2
-    IBOutlet NSButton *fIX;
-    IBOutlet NSButton *fl;
-    IBOutlet NSButton *fm;
-    IBOutlet NSButton *fAY;
-    
-    IBOutlet NSButton *fIX2;
-    IBOutlet NSButton *fl2;
-    IBOutlet NSButton *fm2;
-    IBOutlet NSButton *fAY2;
-    
-    //NSArray *level2 = [[NSArray alloc]initWithObjects:fIX, fl, fm, fAY, fIX2, fl2, fm2, fAY2, nil];
-    //NSArray *level2nums = [[NSArray alloc]initWithObjects: 10, 27, 28, 9, nil];
-    
+    IBOutlet NSButton *fLevel1;
+    IBOutlet NSButton *fLevel2;
+    IBOutlet NSButton *fLevel3;
+    IBOutlet NSButton *fLevel4;
+    IBOutlet NSButton *fLevel5;
+    IBOutlet NSButton *fLevel6;
+    IBOutlet NSButton *fLevel7;
+    IBOutlet NSButton *fLevel8;
+    IBOutlet NSButton *fLevel9;
+    IBOutlet NSButton *fwordButton;
+
     
     
     // Misc. instance variables
@@ -164,6 +140,9 @@
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldDisplaySyncCallbacks;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldDisplaySpeechDoneCallbacks;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldDisplayTextDoneCallbacks;
+//@property(readonly) NSInteger indexOfSelectedItem;
+
+
 
 @end
 
@@ -1051,31 +1030,47 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 } // pauseContinueButtonPressed
 
 
-- (IBAction)LevelPopupSelected:(id)sender {
-    //if ([LevelSelector titleOfSelectedItem] == @"Level 1") {
 
-    NSArray *level1 = [[NSArray alloc]initWithObjects:fAX, fIH, fIY, fDD, fNN, fRR, fSS, fTT, fAX2, fd2, fIH2, fIY2, fn2, fr2, fs2, ft2, nil];
+
+- (IBAction)LevelPopupSelected:(id)sender {
+
     
-    NSArray *level2 = [[NSArray alloc]initWithObjects:fIX, fl, fm, fAY, fIX2, fl2, fm2, fAY2, nil];
-    
-    
-    if ([LevelSelector indexOfSelectedItem] == 1) {
-        //NSLog(@"HELLO");
-        for (NSUInteger i = 0; i < [level1 count]; i++) {
-            [[level1 objectAtIndex:i] setEnabled: YES];
-        }
-    }
-    if ([LevelSelector indexOfSelectedItem] == 2) {
-        //NSLog(@"HELLO2");
-        for (NSUInteger i = 0; i < [level2 count]; i++) {
-            [[level2 objectAtIndex:i] setEnabled: YES];
-        }
-        for (NSUInteger i = 0; i < [level1 count]; i++) {
-            [[level1 objectAtIndex:i] setEnabled: YES];
-        }
-    //long LevelIndex = [sender indexOfSelectedItem];
-    //NSLog(@"%d", LevelIndex);
-    }}
+fwordButton.enabled = ![LevelSelector indexOfSelectedItem]<=1;
+
+
+//    if([LevelSelector indexOfSelectedItem]>=2)
+//    {
+//        [[fLevel2 self] setEnabled:YES];
+//    }
+//    if([LevelSelector indexOfSelectedItem]>=3)
+//    {
+//        [[fLevel3 self] setEnabled:YES];
+//    }
+//    if([LevelSelector indexOfSelectedItem]>=4)
+//    {
+//        [[fLevel4 self] setEnabled:YES];
+//    }
+//    if([LevelSelector indexOfSelectedItem]>=5)
+//    {
+//        [[fLevel5 self] setEnabled:YES];
+//    }
+//    if([LevelSelector indexOfSelectedItem]>=6)
+//    {
+//        [[fLevel6 self] setEnabled:YES];
+//    }
+//    if([LevelSelector indexOfSelectedItem]>=7)
+//    {
+//        [[fLevel7 self] setEnabled:YES];
+//    }
+//    if([LevelSelector indexOfSelectedItem]>=8)
+//    {
+//        [[fLevel8 self] setEnabled:YES];
+//    }
+//    if([LevelSelector indexOfSelectedItem]>=8)
+//    {
+//        [[fLevel8 self] setEnabled:YES];
+//    }
+
 
 
 /*----------------------------------------------------------------------------------------
@@ -1508,15 +1503,8 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
  ----------------------------------------------------------------------------------------*/
 - (void)awakeFromNib {
     
-    NSArray *level1 = [[NSArray alloc]initWithObjects:fAX, fIH, fIY, fDD, fNN, fRR, fSS, fTT, fAX2, fd2, fIH2, fIY2, fn2, fr2, fs2, ft2, nil];
-    
-    NSArray *level2 = [[NSArray alloc]initWithObjects:fIX, fl, fm, fAY, fIX2, fl2, fm2, fAY2, nil];
-    for (NSUInteger i = 0; i < [level1 count]; i++) {
-        [[level1 objectAtIndex:i] setEnabled: NO];
-        }
-    for (NSUInteger i = 0; i < [level2 count]; i++) {
-        //NSLog(@"haha");
-        [[level2 objectAtIndex:i] setEnabled: NO];}
+  //  [[wordButton self ] setEnabled:NO];
+
     
 
     
@@ -1783,70 +1771,29 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 
 
-- (IBAction)t:(id)sender {
-    NSString *phon = @"t";
-    [self startSpeakingButton:phon];
+
+
+- (IBAction)wordButton:(id)sender {
+    
+//    if([LevelSelector indexOfSelectedItem] <= 2)
+//    {
+//        [sender setEnabled:NO];
+//    }
+//    
+    if (![sender isKindOfClass:[NSButton class]])
+        return;
+    NSString *word = [(NSButton *)sender title];
+    [self startSpeakingWordButton:word];
 }
 
-- (IBAction)s:(id)sender {
-    NSString *phon = @"s";
-    [self startSpeakingButton:phon];
-}
-
-
-- (IBAction)r:(id)sender {
-    NSString *phon = @"r";
-    [self startSpeakingButton:phon];
-}
-
-
-- (IBAction)n:(id)sender {
-    NSString *phon = @"n";
-    [self startSpeakingButton:phon];
-}
-
-- (IBAction)IY:(id)sender {
-    NSString *phon = @"IY";
+- (IBAction)phonemeButton:(id)sender {
+    if (![sender isKindOfClass:[NSButton class]])
+        return;
+    NSString *phon = [(NSButton *)sender title];
     [self startSpeakingButton:phon];
 }
 
 
-- (IBAction)d:(id)sender {
-    NSString *phon = @"d";
-    [self startSpeakingButton:phon];
-}
-
-
-- (IBAction)IH:(id)sender {
-    NSString *phon = @"IH";
-    [self startSpeakingButton:phon];
-}
-
-
-- (IBAction)AX:(id)sender {
-    NSString *phon = @"AX";
-    [self startSpeakingButton:phon];
-}
-
-- (IBAction)IX:(id)sender {
-    NSString *phon = @"IX";
-    [self startSpeakingButton:phon];
-}
-
-- (IBAction)l:(id)sender {
-    NSString *phon = @"l";
-    [self startSpeakingButton:phon];
-}
-
-- (IBAction)m:(id)sender {
-    NSString *phon = @"m";
-    [self startSpeakingButton:phon];
-}
-
-- (IBAction)AY:(id)sender {
-    NSString *phon = @"AY";
-    [self startSpeakingButton:phon];
-}
 
 - (void)startSpeakingButton:(NSString *)phon {
     SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModePhoneme);
@@ -1862,6 +1809,37 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                       (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurTextDoneCallBackProc)));
     
     SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)phon, NULL);
+    // if (noErr == theErr) {
+    // Update our vars
+    //fLastErrorCode = 0;
+    //fLastSpeakingValue = NO;
+    //fLastPausedValue = NO;
+    //fCurrentlySpeaking = YES;
+    //fCurrentlyPaused = NO;
+    //[self updateSpeakingControlState];
+    //} else {
+    //[self runAlertPanelWithTitle:@"SpeakText"
+    //                   message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
+    //            buttonTitles:@[@"Oh?"]];
+    //}
+    
+    //[self enableCallbackControlsBasedOnSavingToFileFlag:fSavingToFile];
+}
+
+- (void)startSpeakingWordButton:(NSString *)word {
+    SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModeText);
+    SetSpeechProperty(fCurSpeechChannel, kSpeechPhonemeCallBack,
+                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurPhonemeCallBackProc)));
+    // Convert NSString to cString.
+    // We want the text view the active view.  Also saves any parameters currently being edited.
+    //[fWindow makeFirstResponder:fSpokenTextView];
+    SetSpeechProperty(fCurSpeechChannel,
+                      kSpeechSpeechDoneCallBack,
+                      (__bridge CFTypeRef)(@((long)OurSpeechDoneCallBackProc)));
+    SetSpeechProperty(fCurSpeechChannel, kSpeechTextDoneCallBack,
+                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurTextDoneCallBackProc)));
+    
+    SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)word, NULL);
     // if (noErr == theErr) {
     // Update our vars
     //fLastErrorCode = 0;
