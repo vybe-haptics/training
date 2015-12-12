@@ -1035,7 +1035,9 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 - (IBAction)LevelPopupSelected:(id)sender {
 
     
-fwordButton.enabled = ![LevelSelector indexOfSelectedItem]<=1;
+            fwordButton.enabled = ![LevelSelector indexOfSelectedItem]>=1;
+
+        }
 
 
 //    if([LevelSelector indexOfSelectedItem]>=2)
