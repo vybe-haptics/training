@@ -105,6 +105,7 @@
     IBOutlet NSTextField *fLastAnswer;
     IBOutlet NSTextField *fAllAnswers;
     int totalAttempts;
+    NSString *word;
     
     //serial example code start
     IBOutlet NSPopUpButton *serialListPullDown;
@@ -180,6 +181,8 @@ static void  OurTextDoneCallBackProc(SpeechChannel	inSpeechChannel,
 static void  OurSpeechDoneCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon);
 static void  OurSyncCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, OSType inSyncMessage);
 static void  OurPhonemeCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode);
+
+static void  OurPhonemeCallBackProcTwo(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode);
 
 static void OurErrorCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, CFErrorRef inCFErrorRef);
 static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, CFStringRef inCFStringRef, CFRange inWordCFRange);
@@ -1731,7 +1734,6 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     int level7nums[32] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34};
     int level8nums[36] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34, 13, 23, 36, 39};
     int level9nums[40] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34, 13, 23, 36, 39, 17,38,41};//19 (35,34),25 (20,41)
- 
 
 
 
@@ -1739,6 +1741,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //uint8_t val= phonemeValue;
     //NSLog(@"%", sizeof(level1nums));
 */
+        
     if ([LevelSelector indexOfSelectedItem] == 1) {
         for (int i=0 ; i<8 ; i++){
             if (level1nums[i] == phonemeValue){
@@ -1804,6 +1807,61 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 }
 
 
+- (void)setExpressionForWord:(NSNumber *)phoneme {
+    
+    int phonemeValue = [phoneme shortValue];
+    NSLog(@"%d", phonemeValue);
+    
+    
+    NSDictionary *PhonToWord = @{
+                                 @"about" : @5,
+                                 @"din" : @8,
+                                 @"bit" : @6,
+                                 @"beet" : @20,
+                                 @"nap" : @29,
+                                 @"ran" : @32,
+                                 @"sin" : @33,
+                                 @"tin" : @35,
+                                 @"roses" : @10,
+                                 @"limb" : @27,
+                                 @"mat" : @28,
+                                 @"bite" : @9,
+                                 @"zoo" : @40,
+                                 @"bet" : @7,
+                                 @"bud" : @14,
+                                 @"kin" : @26,
+                                 @"bat" : @2,
+                                 @"wet" : @28,
+                                 @"them" : @21,
+                                 @"hat" : @24,
+                                 @"caught" : @4,
+                                 @"father" : @11,
+                                 @"van" : @37,
+                                 @"pin" : @31,
+                                 @"broot" : @12,
+                                 @"fin" : @15,
+                                 @"bin" : @22,
+                                 @"beet" : @18,
+                                 @"bait" : @3,
+                                 @"tang" : @16,
+                                 @"shin" : @30,
+                                 @"bout" : @34,
+                                 @"thin" : @13,
+                                 @"gain" : @23,
+                                 @"yet" : @36,
+                                 @"book" : @39,
+                                 @"boy" : @17,
+                                 @"measure" : @38,
+                                 @"wet" : @41,
+                                 };
+    if (PhonToWord[word] == @(phonemeValue)){
+        NSLog(@"merda");
+        NSLog(@"phoneme di merda %d", phonemeValue);
+        write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+    }}
+
+
+
 - (void)AssignTestButtons:(NSInteger *)Level {
     //NSMutableArray *level1 = [[NSMutableArray alloc]initWithObjects:@"AX", @"IH", @"IY", @"d", @"n", @"r", @"s", @"t", nil];
     NSMutableArray *phonemesToTest;
@@ -1832,7 +1890,6 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     /*To avoid repeats, uncomment remove object from array but fix issue with remove objext*/
     
 }
-
 
 
 - (IBAction)TestButtons:(id)sender {
@@ -1872,7 +1929,38 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
      @"n" : @"nap",
      @"r" : @"ran",
      @"s" : @"sin",
-     @"t" : @"tin"
+     @"t" : @"tin",
+     @"IX" : @"roses",
+     @"l" : @"limb",
+     @"m" : @"mat",
+     @"AY" : @"bite",
+     @"z" : @"zoo",
+     @"EH" : @"bet",
+     @"UX" : @"bud",
+     @"k" : @"kin",
+     @"AE" : @"bat",
+     @"w" : @"wet",
+     @"D" : @"them",
+     @"h" : @"hat",
+     @"AO" : @"caught",
+     @"AA" : @"father",
+     @"v" : @"van",
+     @"p" : @"pin",
+     @"UW" : @"broot",
+     @"f" : @"fin",
+     @"b" : @"bin",
+     @"OW" : @"beet",
+     @"EY" : @"bait",
+     @"N" : @"tang",
+     @"S" : @"shin",
+     @"AW" : @"bout",
+     @"T" : @"thin",
+     @"g" : @"gain",
+     @"y" : @"yet",
+     @"UH" : @"book",
+     @"OY" : @"boy",
+     @"Z" : @"measure",
+     @"w" : @"wet",
      };
     if (![sender isKindOfClass:[NSButton class]])
         return;
@@ -1880,7 +1968,6 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //[self AssignTestButtons:[LevelSelector indexOfSelectedItem]];
     NSString *CorrespPhon = testButtons[tite];
     NSString *TestWord = PhonToWord[CorrespPhon];
-    NSLog(testButtons[tite]);
     [self startSpeakingWordButton: TestWord];
     }
 
@@ -1929,7 +2016,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 //    
     if (![sender isKindOfClass:[NSButton class]])
         return;
-    NSString *word = [(NSButton *)sender title];
+    word = [(NSButton *)sender title];
     [self startSpeakingWordButton:word];
 }
 
@@ -1976,7 +2063,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 - (void)startSpeakingWordButton:(NSString *)word {
     SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModeText);
     SetSpeechProperty(fCurSpeechChannel, kSpeechPhonemeCallBack,
-                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurPhonemeCallBackProc)));
+                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurPhonemeCallBackProcTwo)));
     // Convert NSString to cString.
     // We want the text view the active view.  Also saves any parameters currently being edited.
     //[fWindow makeFirstResponder:fSpokenTextView];
@@ -1987,6 +2074,8 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                       (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurTextDoneCallBackProc)));
     
     SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)word, NULL);
+    
+    
     // if (noErr == theErr) {
     // Update our vars
     //fLastErrorCode = 0;
@@ -2114,11 +2203,28 @@ static void OurPhonemeCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefC
 
 //} // OurPhonemeCallBackProc
 
+/*----------------------------------------------------------------------------------------
+ OurPhonemeCallBackProc
+ 
+ Called by speech channel every time a phoneme is about to be generated.	 You might use
+ this to animate a speaking character.
+ ----------------------------------------------------------------------------------------*/
+static void OurPhonemeCallBackProcTwo(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode) {
+    @autoreleasepool {
+        SpeakingTextWindow *stw = (__bridge SpeakingTextWindow *)inRefCon;
+        //if ([stw shouldDisplayPhonemeCallbacks]) {
+        [stw performSelectorOnMainThread:@selector(setExpressionForWord:)
+         //[[stw characterView] performSelectorOnMainThread:@selector(setExpressionForPhoneme:)
+                              withObject:@(inPhonemeOpcode)
+                           waitUntilDone:NO];
+    }
+}
 
+//} // OurPhonemeCallBackProc
 
 /*----------------------------------------------------------------------------------------
  OurWordCallBackProc
-
+ 
  Called by speech channel every time a word is about to be generated.  This program
  uses this callback to highlight the currently spoken word.
  ----------------------------------------------------------------------------------------*/
@@ -2132,3 +2238,20 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         }
     }
 } // OurWordCFCallBackProc
+
+/*----------------------------------------------------------------------------------------
+ OurWordCallBackProc2
+
+ Called by speech channel every time a word is about to be generated.  This program
+ uses this callback to highlight the currently spoken word.
+ ----------------------------------------------------------------------------------------*/
+static void OurWordCFCallBackProc2(SpeechChannel inSpeechChannel, SRefCon inRefCon, CFStringRef inCFStringRef, CFRange inWordCFRange) {
+    @autoreleasepool {
+        SpeakingTextWindow *stw = (__bridge SpeakingTextWindow *)inRefCon;
+        if ([stw shouldDisplayWordCallbacks]) {
+            [stw performSelectorOnMainThread:@selector(highlightWordWithParams:)
+                                  withObject:@{kWordCallbackParamPosition:@(inWordCFRange.location), kWordCallbackParamLength:@(inWordCFRange.length)}
+                               waitUntilDone:NO];
+        }
+    }
+} // OurWordCFCallBackProc2
