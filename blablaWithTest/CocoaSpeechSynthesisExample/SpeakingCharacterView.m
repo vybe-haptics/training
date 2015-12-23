@@ -82,17 +82,17 @@ static NSString *kCharacterExpressionFrameImageFileNameKey = @"FrameImageFileNam
 
     Sets the current expression to the expression corresponding to the given phoneme ID.
    ----------------------------------------------------------------------------------------*/
-- (void)setExpressionForPhoneme:(NSNumber *)phoneme {
-	int phonemeValue = [phoneme shortValue];
-
-	if ((phonemeValue == 0) || (phonemeValue == 1)) {
-		[self setExpression:kCharacterExpressionIdentifierIdle];
-	} else if ((phonemeValue >= 2) && (phonemeValue <= 17)) {
-		[self setExpression:kCharacterExpressionIdentifierVowel];
-	} else {
-		[self setExpression:kCharacterExpressionIdentifierConsonant];
-	}
-}                                       /* setExpressionForPhoneme */
+//- (void)setExpressionForPhoneme:(NSNumber *)phoneme {
+//	int phonemeValue = [phoneme shortValue];
+//
+//	if ((phonemeValue == 0) || (phonemeValue == 1)) {
+//		[self setExpression:kCharacterExpressionIdentifierIdle];
+//	} else if ((phonemeValue >= 2) && (phonemeValue <= 17)) {
+//		[self setExpression:kCharacterExpressionIdentifierVowel];
+//	} else {
+//		[self setExpression:kCharacterExpressionIdentifierConsonant];
+//	}
+//}                                       /* setExpressionForPhoneme */
 
 /*----------------------------------------------------------------------------------------
     setExpression:

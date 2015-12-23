@@ -8,6 +8,7 @@
 
 #import "SpeakingTextWindow.h"
 #import "SpeakingCharacterView.h"
+#import "ISSoundAdditions.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -43,7 +44,7 @@
     IBOutlet NSButton *fPhonemeModeCheckboxButton;
     IBOutlet NSButton *fDumpPhonemesButton;
     IBOutlet NSButton *fUseDictionaryButton;
-
+    
     // Parameters panel outlets
     IBOutlet NSTextField *fRateDefaultEditableField;
     IBOutlet NSTextField *fPitchBaseDefaultEditableField;
@@ -54,7 +55,7 @@
     IBOutlet NSTextField *fPitchModCurrentStaticField;
     IBOutlet NSTextField *fVolumeCurrentStaticField;
     IBOutlet NSButton *fResetButton;
-
+    
     // Callbacks panel outlets
     IBOutlet NSButton *fHandleWordCallbacksCheckboxButton;
     IBOutlet NSButton *fHandlePhonemeCallbacksCheckboxButton;
@@ -174,10 +175,10 @@ NSString *kErrorCallbackParamError = @"ParamError";
 #pragma mark - Prototypes
 
 static void  OurTextDoneCallBackProc(SpeechChannel	inSpeechChannel,
-                                            SRefCon			inRefCon,
-                                            const void **	inNextBuf,
-                                            unsigned long * inByteLen,
-                                            long *			inControlFlags);
+                                     SRefCon			inRefCon,
+                                     const void **	inNextBuf,
+                                     unsigned long * inByteLen,
+                                     long *			inControlFlags);
 static void  OurSpeechDoneCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon);
 static void  OurSyncCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, OSType inSyncMessage);
 static void  OurPhonemeCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode);
@@ -196,19 +197,19 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 // start serial example code
 
 /*
-// executes after everything in the xib/nib is initiallized
-- (void)awakeFromNib {
-    // we don't have a serial port open yet
-    serialFileDescriptor = -1;
-    readThreadRunning = FALSE;
-    
-    // first thing is to refresh the serial port list
-    [self refreshSerialList:@"Select a Serial Port"];
-    
-    // now put the cursor in the text field
-    [serialInputField becomeFirstResponder];
-    
-}*/
+ // executes after everything in the xib/nib is initiallized
+ - (void)awakeFromNib {
+ // we don't have a serial port open yet
+ serialFileDescriptor = -1;
+ readThreadRunning = FALSE;
+ 
+ // first thing is to refresh the serial port list
+ [self refreshSerialList:@"Select a Serial Port"];
+ 
+ // now put the cursor in the text field
+ [serialInputField becomeFirstResponder];
+ 
+ }*/
 
 // open the serial port
 //   - nil is returned on success
@@ -455,7 +456,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
 }
 
-// action from refresh button 
+// action from refresh button
 - (IBAction) refreshAction: (id) cntrl {
     [self refreshSerialList:@"Select a Serial Port"];
     
@@ -511,22 +512,22 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 //end serial example code
 - (void) WordToPhon: (NSString *) word {
     NSDictionary *WordToPhon = @{
-                                  @"about" : @"AX",
-                                  @"din" : @"d",
-                                  @"bit" : @"IH",
-                                  @"beet" : @"IY",
-                                  @"nap" : @"n",
-                                  @"ran" : @"r",
-                                  @"sin" : @"s",
-                                  @"tin" : @"t"
-                                  };
+                                 @"about" : @"AX",
+                                 @"din" : @"d",
+                                 @"bit" : @"IH",
+                                 @"beet" : @"IY",
+                                 @"nap" : @"n",
+                                 @"ran" : @"r",
+                                 @"sin" : @"s",
+                                 @"tin" : @"t"
+                                 };
     wordCurrentPhon = WordToPhon[word];
 }
 
 
 /*----------------------------------------------------------------------------------------
  init
-
+ 
  Set the default text of the window.
  ----------------------------------------------------------------------------------------*/
 - (instancetype)init {
@@ -537,13 +538,13 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         [self setTextData:[NSData dataWithBytes:p length:strlen(p)]];
         [self setTextDataType:kPlainTextDataTypeString];
     }
-
+    
     return (self);
 } // init
 
 /*----------------------------------------------------------------------------------------
  close
-
+ 
  Make sure to stop speech when closing.
  ----------------------------------------------------------------------------------------*/
 - (void)close {
@@ -552,7 +553,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  setTextData:
-
+ 
  Set our text data variable and update text in window if showing.
  ----------------------------------------------------------------------------------------*/
 - (void)setTextData:(NSData *)theData {
@@ -570,7 +571,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  textData
-
+ 
  Returns autoreleased copy of text data.
  ----------------------------------------------------------------------------------------*/
 - (NSData *)textData {
@@ -579,7 +580,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  setTextDataType:
-
+ 
  Set our text data type variable.
  ----------------------------------------------------------------------------------------*/
 - (void)setTextDataType:(NSString *)theType {
@@ -588,7 +589,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  textDataType
-
+ 
  Returns autoreleased copy of text data.
  ----------------------------------------------------------------------------------------*/
 - (NSString *)textDataType {
@@ -597,7 +598,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  textDataType
-
+ 
  Returns reference to character view for callbacks.
  ----------------------------------------------------------------------------------------*/
 - (SpeakingCharacterView *)characterView {
@@ -606,7 +607,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  shouldDisplayWordCallbacks
-
+ 
  Returns true if user has chosen to have words hightlight during synthesis.
  ----------------------------------------------------------------------------------------*/
 - (BOOL)shouldDisplayWordCallbacks {
@@ -615,7 +616,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  shouldDisplayPhonemeCallbacks
-
+ 
  Returns true if user has chosen to the character animate phonemes during synthesis.
  ----------------------------------------------------------------------------------------*/
 - (BOOL)shouldDisplayPhonemeCallbacks {
@@ -624,7 +625,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  shouldDisplayErrorCallbacks
-
+ 
  Returns true if user has chosen to have an alert appear in response to an error callback.
  ----------------------------------------------------------------------------------------*/
 - (BOOL)shouldDisplayErrorCallbacks {
@@ -633,7 +634,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  shouldDisplaySyncCallbacks
-
+ 
  Returns true if user has chosen to have an alert appear in response to an sync callback.
  ----------------------------------------------------------------------------------------*/
 - (BOOL)shouldDisplaySyncCallbacks {
@@ -642,7 +643,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  shouldDisplaySpeechDoneCallbacks
-
+ 
  Returns true if user has chosen to have an alert appear when synthesis is finished.
  ----------------------------------------------------------------------------------------*/
 - (BOOL)shouldDisplaySpeechDoneCallbacks {
@@ -651,7 +652,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  shouldDisplayTextDoneCallbacks
-
+ 
  Returns true if user has chosen to have an alert appear when text processing is finished.
  ----------------------------------------------------------------------------------------*/
 - (BOOL)shouldDisplayTextDoneCallbacks {
@@ -660,7 +661,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  updateSpeakingControlState
-
+ 
  This routine is called when appropriate to update the Start/Stop Speaking,
  Pause/Continue Speaking buttons.
  ----------------------------------------------------------------------------------------*/
@@ -681,9 +682,9 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     } else {
         [fPauseContinueButton setTitle:NSLocalizedString(@"Pause Speaking", @"Pause Speaking")];
     }
-
+    
     [self enableOptionsForSpeakingState:fCurrentlySpeaking];
-
+    
     // update parameter fields
     NSNumber *valueAsNSNumber;
     if (noErr == CopySpeechProperty(fCurSpeechChannel, kSpeechRateProperty, (void *)&valueAsNSNumber)) {
@@ -702,14 +703,14 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  highlightWordWithParams:
-
+ 
  Highlights the word currently being spoken based on text position and text length
  provided in the word callback routine.
  ----------------------------------------------------------------------------------------*/
 - (void)highlightWordWithParams:(NSDictionary *)params {
     UInt32 selectionPosition = [params[kWordCallbackParamPosition] longValue] + fOffsetToSpokenText;
     UInt32 wordLength = [params[kWordCallbackParamLength] longValue];
-
+    
     [fSpokenTextView scrollRangeToVisible:NSMakeRange(selectionPosition, wordLength)];
     [fSpokenTextView setSelectedRange:NSMakeRange(selectionPosition, wordLength)];
     [fSpokenTextView display];
@@ -717,17 +718,17 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  displayErrorAlertWithParams:
-
+ 
  Displays an alert describing a text processing error provided in the error callback.
  ----------------------------------------------------------------------------------------*/
 - (void)displayErrorAlertWithParams:(NSDictionary *)params {
     UInt32 errorPosition = [params[kErrorCallbackParamPosition] longValue] + fOffsetToSpokenText;
     UInt32 errorCode = [params[kErrorCallbackParamError] longValue];
-
+    
     if (errorCode != fLastErrorCode) {
         OSErr theErr = noErr;
         NSString *theMessageStr = NULL;
-
+        
         // Tell engine to pause while we display this dialog.
         theErr = PauseSpeechAt(fCurSpeechChannel, kImmediate);
         if (noErr != theErr) {
@@ -735,18 +736,18 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                                  message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
                             buttonTitles:@[@"Oh?"]];
         }
-
+        
         // Select offending character
         [fSpokenTextView setSelectedRange:NSMakeRange(errorPosition, 1)];
         [fSpokenTextView display];
-
+        
         // Display error alert, and stop or continue based on user's desires
         NSString * messageFormat = NSLocalizedString(@"Error #%ld occurred at position %ld in the text.",
                                                      @"Error #%ld occurred at position %ld in the text.");
         theMessageStr = [NSString stringWithFormat:messageFormat,
                          (long) errorCode, (long) errorPosition];
         NSModalResponse response = [self runAlertPanelWithTitle:@"Text Processing Error"
-                                                      message:theMessageStr
+                                                        message:theMessageStr
                                                    buttonTitles:@[@"Stop", @"Continue"]];
         if (NSAlertFirstButtonReturn == response) {
             [self startStopButtonPressed:fStartStopButton];
@@ -758,20 +759,20 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                                 buttonTitles:@[@"Oh?"]];
             }
         }
-
+        
         fLastErrorCode = errorCode;
     }
 } // displayErrorAlertWithParams
 
 /*----------------------------------------------------------------------------------------
  displaySyncAlertWithMessage:
-
+ 
  Displays an alert with information about a sync command in response to a sync callback.
  ----------------------------------------------------------------------------------------*/
 - (void)displaySyncAlertWithMessage:(NSNumber *)messageNumber {
     OSErr theErr = noErr;
     NSString *theMessageStr = NULL;
-
+    
     // Tell engine to pause while we display this dialog.
     theErr = PauseSpeechAt(fCurSpeechChannel, kImmediate);
     if (noErr != theErr) {
@@ -779,14 +780,14 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                              message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
                         buttonTitles:@[@"Oh?"]];
     }
-
+    
     // Display error alert and stop or continue based on user's desires
     UInt32 theMessageValue = [messageNumber longValue];
     NSString * messageFormat = NSLocalizedString(@"Sync embedded command was discovered containing message %ld ('%4s').",
                                                  @"Sync embedded command was discovered containing message %ld ('%4s').");
     theMessageStr = [NSString stringWithFormat:messageFormat,
                      (long) theMessageValue, (char *) &theMessageValue];
-
+    
     NSInteger alertButtonClicked =
     [self runAlertPanelWithTitle:@"Sync Callback" message:theMessageStr buttonTitles:@[@"Stop", @"Continue"]];
     if (alertButtonClicked == 1) {
@@ -803,7 +804,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  speechIsDone
-
+ 
  Updates user interface and optionally displays an alert when generation of speech is
  finish.
  ----------------------------------------------------------------------------------------*/
@@ -820,12 +821,12 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  displayTextDoneAlert
-
+ 
  Displays an alert in response to a text done callback.
  ----------------------------------------------------------------------------------------*/
 - (void)displayTextDoneAlert {
     OSErr theErr = noErr;
-
+    
     // Tell engine to pause while we display this dialog.
     theErr = PauseSpeechAt(fCurSpeechChannel, kImmediate);
     if (noErr != theErr) {
@@ -833,7 +834,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                              message:@"Generation of synthesized speech is finished."
                         buttonTitles:@[@"OK"]];
     }
-
+    
     // Display error alert, and stop or continue based on user's desires
     NSModalResponse response = [self runAlertPanelWithTitle:@"Text Done Callback"
                                                     message:@"Processing of the text has completed."
@@ -852,16 +853,16 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  startStopButtonPressed:
-
+ 
  An action method called when the user clicks the "Start Speaking"/"Stop Speaking"
  button.	 We either start or stop speaking based on the current speaking state.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)startStopButtonPressed:(id)sender {
     OSErr theErr = noErr;
-
+    
     if (fCurrentlySpeaking) {
         long whereToStop;
-
+        
         // Grab where to stop at value from radio buttons
         if ([fAfterWordRadioButton intValue]) {
             whereToStop = kEndOfWord;
@@ -887,7 +888,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                                 buttonTitles:@[@"Oh?"]];
             }
         }
-
+        
         fCurrentlySpeaking = NO;
         [self updateSpeakingControlState];
     } else {
@@ -897,15 +898,15 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  saveAsButtonPressed:
-
+ 
  An action method called when the user clicks the "Save As File" button.	 We ask user
  to specify where to save the file, then start speaking to this file.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)saveAsButtonPressed:(id)sender {
     NSURL *selectedFileURL = NULL;
-
+    
     NSSavePanel *theSavePanel = [NSSavePanel savePanel];
-
+    
     [theSavePanel setPrompt:NSLocalizedString(@"Save", @"Save")];
     [theSavePanel setNameFieldStringValue:@"Synthesized Speech.aiff"];
     if (NSFileHandlingPanelOKButton == [theSavePanel runModal]) {
@@ -916,14 +917,14 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  startSpeakingTextViewToURL:
-
+ 
  This method sets up the speech channel and begins the speech synthesis
  process, optionally speaking to a file instead playing through the speakers.
  ----------------------------------------------------------------------------------------*/
 - (void)startSpeakingTextViewToURL:(NSURL *)url {
     OSErr theErr = noErr;
     NSString *theViewText;
-
+    
     // Grab the selection substring, or if no selection then grab entire text.
     fOrgSelectionRange = [fSpokenTextView selectedRange];
     if (!fOrgSelectionRange.length) {
@@ -933,7 +934,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         theViewText = [[fSpokenTextView string] substringWithRange:fOrgSelectionRange];
         fOffsetToSpokenText = fOrgSelectionRange.location;
     }
-
+    
     // Setup our callbacks
     fSavingToFile = (url != NULL);
     if (noErr == theErr) {
@@ -991,14 +992,18 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                             buttonTitles:@[@"Oh?"]];
         }
     }
-
+    
     // Set URL to save file to disk
     SetSpeechProperty(fCurSpeechChannel, kSpeechOutputToFileURLProperty, (__bridge CFTypeRef)(url));
-
+    
     // Convert NSString to cString.
     // We want the text view the active view.  Also saves any parameters currently being edited.
     [fWindow makeFirstResponder:fSpokenTextView];
-
+    
+    //    SetSpeechProperty(fCurSpeechChannel,
+    //                      kSpeechVolumeProperty,
+    //                      (__bridge CFTypeRef)(@(0.0)));
+    
     theErr = SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)theViewText, NULL);
     if (noErr == theErr) {
         // Update our vars
@@ -1013,35 +1018,35 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                              message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
                         buttonTitles:@[@"Oh?"]];
     }
-
+    
     [self enableCallbackControlsBasedOnSavingToFileFlag:fSavingToFile];
 } // startSpeakingTextViewToURL
 
 /*----------------------------------------------------------------------------------------
  pauseContinueButtonPressed:
-
+ 
  An action method called when the user clicks the "Pause Speaking"/"Continue Speaking"
  button.	 We either pause or continue speaking based on the current speaking state.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)pauseContinueButtonPressed:(id)sender {
     OSErr theErr = noErr;
-
+    
     if (fCurrentlyPaused) {
         // We want the text view the active view.  Also saves any parameters currently being edited.
         [fWindow makeFirstResponder:fSpokenTextView];
-
+        
         theErr = ContinueSpeech(fCurSpeechChannel);
         if (noErr != theErr) {
             [self runAlertPanelWithTitle:@"ContinueSpeech"
                                  message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
                             buttonTitles:@[@"Oh?"]];
         }
-
+        
         fCurrentlyPaused = NO;
         [self updateSpeakingControlState];
     } else {
         long whereToPause;
-
+        
         // Figure out where to stop from radio buttons
         if ([fAfterWordRadioButton intValue]) {
             whereToPause = kEndOfWord;
@@ -1050,14 +1055,14 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         } else {
             whereToPause = kImmediate;
         }
-
+        
         theErr = PauseSpeechAt(fCurSpeechChannel, whereToPause);
         if (noErr != theErr) {
             [self runAlertPanelWithTitle:@"PauseSpeechAt"
                                  message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
                             buttonTitles:@[@"Oh?"]];
         }
-
+        
         fCurrentlyPaused = YES;
         [self updateSpeakingControlState];
     }
@@ -1067,11 +1072,11 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 
 - (IBAction)LevelPopupSelected:(id)sender {
-
     
-            fwordButton.enabled = ![LevelSelector indexOfSelectedItem]>=1;
-
-        }
+    
+    fwordButton.enabled = ![LevelSelector indexOfSelectedItem]>=1;
+    
+}
 
 
 //    if([LevelSelector indexOfSelectedItem]>=2)
@@ -1111,7 +1116,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  voicePopupSelected:
-
+ 
  An action method called when the user selects a new voice from the Voices pop-up
  menu.  We ask the speech channel to use the selected voice.	 If the current
  speech channel cannot use the selected voice, we close and open new speech
@@ -1120,7 +1125,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 - (IBAction)voicePopupSelected:(id)sender {
     OSErr theErr = noErr;
     long theSelectedMenuIndex = [sender indexOfSelectedItem];
-
+    
     if (!theSelectedMenuIndex) {
         // Use the default voice from preferences.
         // Our only choice is to close and reopen the speech channel to get the default voice.
@@ -1144,11 +1149,11 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             // Update our object fields with the selection
             fSelectedVoiceCreator = theVoiceSpec.creator;
             fSelectedVoiceID = theVoiceSpec.id;
-
+            
             // Change the current voice.  If it needs another engine, then dispose the current channel and open another
             NSDictionary *voiceDict = @{(__bridge NSString *)kSpeechVoiceID:@(fSelectedVoiceID),
                                         (__bridge NSString *)kSpeechVoiceCreator:@(fSelectedVoiceCreator)};
-
+            
             theErr = SetSpeechProperty(fCurSpeechChannel, kSpeechCurrentVoiceProperty, (__bridge CFDictionaryRef) voiceDict);
             if (incompatibleVoice == theErr) {
                 theErr = [self createNewSpeechChannel:&theVoiceSpec];
@@ -1172,13 +1177,13 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  charByCharCheckboxSelected:
-
+ 
  An action method called when the user checks/unchecks the Character-By-Character
  mode checkbox.	We tell the speech channel to use this setting.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)charByCharCheckboxSelected:(id)sender {
     OSErr theErr = noErr;
-
+    
     if ([fCharByCharCheckboxButton intValue]) {
         theErr = SetSpeechProperty(fCurSpeechChannel, kSpeechCharacterModeProperty, kSpeechModeLiteral);
     } else {
@@ -1193,13 +1198,13 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  digitByDigitCheckboxSelected:
-
+ 
  An action method called when the user checks/unchecks the Digit-By-Digit
  mode checkbox.	We tell the speech channel to use this setting.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)digitByDigitCheckboxSelected:(id)sender {
     OSErr theErr = noErr;
-
+    
     if ([fDigitByDigitCheckboxButton intValue]) {
         theErr = SetSpeechProperty(fCurSpeechChannel, kSpeechNumberModeProperty, kSpeechModeLiteral);
     } else {
@@ -1214,13 +1219,13 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  phonemeModeCheckboxSelected:
-
+ 
  An action method called when the user checks/unchecks the Phoneme input
  mode checkbox.	We tell the speech channel to use this setting.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)phonemeModeCheckboxSelected:(id)sender {
     OSErr theErr = noErr;
-
+    
     if ([fPhonemeModeCheckboxButton intValue]) {
 #if 1
         theErr = SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModePhoneme);
@@ -1245,14 +1250,14 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  dumpPhonemesSelected:
-
+ 
  An action method called when the user clicks the Dump Phonemes button.	We ask
  the speech channel for a phoneme representation of the window text then save the
  result to a text file at a location determined by the user.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)dumpPhonemesSelected:(id)sender {
     NSSavePanel *panel = [NSSavePanel savePanel];
-
+    
     if ([panel runModal] && [panel URL]) {
         // Get and speech text
         CFStringRef phonemesCFStringRef;
@@ -1280,13 +1285,13 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  useDictionarySelected:
-
+ 
  An action method called when the user clicks the "Use Dictionary…" button.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)useDictionarySelected:(id)sender {
     // Open file.
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-
+    
     panel.message = @"Choose a dictionary file";
     panel.allowedFileTypes = @[@"xml", @"plist"];
     
@@ -1305,7 +1310,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                 }
             } else {
                 NSString * messageFormat = NSLocalizedString(@"dictionaryWithContentsOfURL:'%@' returned NULL",
-                                                       @"dictionaryWithContentsOfURL:'%@' returned NULL");
+                                                             @"dictionaryWithContentsOfURL:'%@' returned NULL");
                 [self runAlertPanelWithTitle:@"TextToPhonemes"
                                      message:[NSString stringWithFormat:messageFormat, [fileURL path]]
                                 buttonTitles:@[@"Oh?"]];
@@ -1316,7 +1321,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  rateChanged:
-
+ 
  An action method called when the user changes the rate field.  We tell the speech
  channel to use this setting.
  ----------------------------------------------------------------------------------------*/
@@ -1335,7 +1340,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  pitchBaseChanged:
-
+ 
  An action method called when the user changes the pitch base field.	 We tell the speech
  channel to use this setting.
  ----------------------------------------------------------------------------------------*/
@@ -1353,7 +1358,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  pitchModChanged:
-
+ 
  An action method called when the user changes the pitch modulation field.  We tell
  the speech channel to use this setting.
  ----------------------------------------------------------------------------------------*/
@@ -1371,7 +1376,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  volumeChanged:
-
+ 
  An action method called when the user changes the volume field.	 We tell
  the speech channel to use this setting.
  ----------------------------------------------------------------------------------------*/
@@ -1390,15 +1395,15 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  resetSelected:
-
+ 
  An action method called when the user clicks the Use Defaults button.  We tell
  the speech channel to use this the default settings.
  ----------------------------------------------------------------------------------------*/
 - (IBAction)resetSelected:(id)sender {
     OSErr theErr = SetSpeechProperty(fCurSpeechChannel, kSpeechResetProperty, NULL);
-
+    
     [self fillInEditableParameterFields];
-
+    
     if (noErr != theErr) {
         [self runAlertPanelWithTitle:@"SetSpeechProperty(kSpeechResetProperty)"
                              message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
@@ -1422,7 +1427,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  enableOptionsForSpeakingState:
-
+ 
  Updates controls in the Option tab panel based on the passed speakingNow flag.
  ----------------------------------------------------------------------------------------*/
 - (void)enableOptionsForSpeakingState:(BOOL)speakingNow {
@@ -1436,7 +1441,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  enableCallbackControlsForSavingToFile:
-
+ 
  Updates controls in the Callback tab panel based on the passed savingToFile flag.
  ----------------------------------------------------------------------------------------*/
 - (void)enableCallbackControlsBasedOnSavingToFileFlag:(BOOL)savingToFile {
@@ -1454,30 +1459,30 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  fillInEditableParameterFields
-
+ 
  Updates "Current" fields in the Parameters tab panel based on the current state of the
  speech channel.
  ----------------------------------------------------------------------------------------*/
 - (void)fillInEditableParameterFields {
     double tempDoubleValue = 0.0;
     NSNumber *tempNSNumber = NULL;
-
+    
     CopySpeechProperty(fCurSpeechChannel, kSpeechRateProperty, (void *)&tempNSNumber);
     tempDoubleValue = [tempNSNumber doubleValue];
-
+    
     [fRateDefaultEditableField setDoubleValue:tempDoubleValue];
     [fRateCurrentStaticField setDoubleValue:tempDoubleValue];
-
+    
     CopySpeechProperty(fCurSpeechChannel, kSpeechPitchBaseProperty, (void *)&tempNSNumber);
     tempDoubleValue = [tempNSNumber doubleValue];
     [fPitchBaseDefaultEditableField setDoubleValue:tempDoubleValue];
     [fPitchBaseCurrentStaticField setDoubleValue:tempDoubleValue];
-
+    
     CopySpeechProperty(fCurSpeechChannel, kSpeechPitchModProperty, (void *)&tempNSNumber);
     tempDoubleValue = [tempNSNumber doubleValue];
     [fPitchModDefaultEditableField setDoubleValue:tempDoubleValue];
     [fPitchModCurrentStaticField setDoubleValue:tempDoubleValue];
-
+    
     CopySpeechProperty(fCurSpeechChannel, kSpeechVolumeProperty, (void *)&tempNSNumber);
     tempDoubleValue = [tempNSNumber doubleValue];
     [fVolumeDefaultEditableField setDoubleValue:tempDoubleValue];
@@ -1486,14 +1491,14 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  createNewSpeechChannel:
-
+ 
  Create a new speech channel for the given voice spec.  A nil voice spec pointer
  causes the speech channel to use the default voice.	 Any existing speech channel
  for this window is closed first.
  ----------------------------------------------------------------------------------------*/
 - (OSErr)createNewSpeechChannel:(VoiceSpec *)voiceSpec {
     OSErr theErr = noErr;
-
+    
     // Dispose of the current one, if present.
     if (fCurSpeechChannel) {
         theErr = DisposeSpeechChannel(fCurSpeechChannel);
@@ -1502,7 +1507,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                                  message:[NSString stringWithFormat:fErrorFormatString, theErr, theErr]
                             buttonTitles:@[@"Oh?"]];
         }
-
+        
         fCurSpeechChannel = NULL;
     }
     // Create a speech channel
@@ -1523,7 +1528,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                             buttonTitles:@[@"Oh?"]];
         }
     }
-
+    
     return (theErr);
 } // createNewSpeechChannel
 
@@ -1539,10 +1544,10 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
  ----------------------------------------------------------------------------------------*/
 - (void)awakeFromNib {
     
-  //  [[wordButton self ] setEnabled:NO];
-
+    //  [[wordButton self ] setEnabled:NO];
     
-
+    
+    
     
     //serial example code start
     // we don't have a serial port open yet
@@ -1640,7 +1645,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  windowNibName
-
+ 
  Part of the NSDocument support. Called by NSDocument to return the nib file name of
  the document.
  ----------------------------------------------------------------------------------------*/
@@ -1650,7 +1655,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  windowControllerDidLoadNib:
-
+ 
  Part of the NSDocument support. Called by NSDocument after the nib has been loaded
  to udpate window as appropriate.
  ----------------------------------------------------------------------------------------*/
@@ -1671,7 +1676,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  dataRepresentationOfType:
-
+ 
  Part of the NSDocument support. Called by NSDocument to wrote the document.
  ----------------------------------------------------------------------------------------*/
 - (NSData *)dataRepresentationOfType:(NSString *)aType {
@@ -1681,20 +1686,20 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     } else {
         [self setTextData:[NSData dataWithBytes:[[fSpokenTextView string] cString] length:[[fSpokenTextView string] cStringLength]]];
     }
-
+    
     return ([self textData]);
 } // dataRepresentationOfType
 
 /*----------------------------------------------------------------------------------------
  loadDataRepresentation: ofType:
-
+ 
  Part of the NSDocument support. Called by NSDocument to read the document.
  ----------------------------------------------------------------------------------------*/
 - (BOOL)loadDataRepresentation:(NSData *)data ofType:(NSString *)aType {
     // Read the opened file.
     [self setTextData:data];
     [self setTextDataType:aType];
-
+    
     return (YES);
 } // loadDataRepresentation
 
@@ -1705,8 +1710,8 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
  simple replacement method for NSRunAlertPanel
  ----------------------------------------------------------------------------------------*/
 - (NSModalResponse) runAlertPanelWithTitle:(NSString *)inTitle
-                                    message:(NSString *)inMessage
-                               buttonTitles:(NSArray *)inButtonTitles
+                                   message:(NSString *)inMessage
+                              buttonTitles:(NSArray *)inButtonTitles
 {
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = NSLocalizedString(inTitle, inTitle);
@@ -1722,106 +1727,151 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 - (void)setExpressionForPhoneme:(NSNumber *)phoneme {
     
-    //NSArray *level2nums = [[NSArray alloc]initWithObjects: @10, @27, @28, @9, nil];
-
     int phonemeValue = [phoneme shortValue];
-    int level1nums[8] = {5, 8, 6, 20, 29, 32, 33, 35};
-    int level2nums[12] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9};
-    int level3nums[16] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26};
-    int level4nums[20] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24};
-    int level5nums[24] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31};
-    int level6nums[28] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18};
-    int level7nums[32] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34};
-    int level8nums[36] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34, 13, 23, 36, 39};
-    int level9nums[40] = {5, 8, 6, 20, 29, 32, 33, 35, 10, 27, 28, 9, 40, 7, 14, 26, 2, 28, 21, 24, 4, 11, 37, 31, 12, 15, 22, 18, 3, 16, 30, 34, 13, 23, 36, 39, 17,38,41};//19 (35,34),25 (20,41)
-
-
-
-    /*
-    //uint8_t val= phonemeValue;
-    //NSLog(@"%", sizeof(level1nums));
-*/
-        
+    //int phonemeValue = phoneme;
+    //int level1nums[9] = {0, 5, 8, 6, 20, 29, 32, 33, 35};
+    NSArray *level1nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35,nil];
+    
+    NSArray *level2nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35, @10, @27, @28, @9, nil];
+    NSArray *level3nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35, @10, @27, @28, @9, @40, @7, @14, @26, nil];
+    NSArray *level4nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35, @10, @27, @28, @9, @40, @7, @14, @26, @2, @28, @21, @24, nil];
+    NSArray *level5nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35, @10, @27, @28, @9, @40, @7, @14, @26, @2, @28, @21, @24, @4, @11, @37, @31, nil];
+    NSArray *level6nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35, @10, @27, @28, @9, @40, @7, @14, @26, @2, @28, @21, @24, @4, @11, @37, @31, @12, @15, @22, @18, nil];
+    NSArray *level7nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35, @10, @27, @28, @9, @40, @7, @14, @26, @2, @28, @21, @24, @4, @11, @37, @31, @12, @15, @22, @18, @3, @16, @30, @34, nil];
+    NSArray *level8nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35, @10, @27, @28, @9, @40, @7, @14, @26, @2, @28, @21, @24, @4, @11, @37, @31, @12, @15, @22, @18, @3, @16, @30, @34, @13, @23, @36, @39, nil];
+    NSArray *level9nums = [NSArray arrayWithObjects:@0, @5, @8, @6, @20, @29, @32, @33, @35, @10, @27, @28, @9, @40, @7, @14, @26, @2, @28, @21, @24, @4, @11, @37, @31, @12, @15, @22, @18, @3, @16, @30, @34, @13, @23, @36, @39, @17, @38, @41, nil];//19 (35,34),25 (20,41)
+    
+//    SetSpeechProperty(fCurSpeechChannel,
+//                      kSpeechVolumeProperty,
+//                      (__bridge CFTypeRef)(@(0.0)));
+    
+//    
+//        if (phonemeValue == 5){
+//            NSLog(@"fuck work");
+//                SetSpeechProperty(fCurSpeechChannel,
+//                                  kSpeechVolumeProperty,
+//                                  (__bridge CFTypeRef)(@(0.0)));
+//            //usleep(50000);
+//            //[NSSound setSystemVolume:0.0];
+//            //usleep(100000);
+//        }
+//        else{
+//            NSLog(@"fuck work");
+//            SetSpeechProperty(fCurSpeechChannel,
+//                              kSpeechVolumeProperty,
+//                              (__bridge CFTypeRef)(@(1.0)));}
+//            //[NSSound setSystemVolume:1.0];}
+    
+    NSLog(@"phoneme %d", phonemeValue);
+    int val = 0;
+    
     if ([LevelSelector indexOfSelectedItem] == 1) {
-        for (int i=0 ; i<8 ; i++){
-            if (level1nums[i] == phonemeValue){
+        if ([level1nums containsObject:@(phonemeValue)]){
                 NSLog(@"level 1 phoneme %d", phonemeValue);
                 write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }
-        }}
+            [NSSound setSystemVolume:0.0];}
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+               [NSSound setSystemVolume:1.0]; }
+    }
     if ([LevelSelector indexOfSelectedItem] == 2) {
-        for (int i=0 ; i<12 ; i++){
-            if (level2nums[i] == phonemeValue){
-                NSLog(@"level 2 phoneme %d", phonemeValue);
-                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }}}
+        if ([level2nums containsObject:@(phonemeValue)]){
+            NSLog(@"level 2 phoneme %d", phonemeValue);
+            write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            [NSSound setSystemVolume:0.0];
+        }
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+            [NSSound setSystemVolume:1.0];
+        }
+    }
     if ([LevelSelector indexOfSelectedItem] == 3) {
-        for (int i=0 ; i<16 ; i++){
-            if (level3nums[i] == phonemeValue){
-                NSLog(@"level 3 phoneme %d", phonemeValue);
-                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }
-        }}
+        if ([level3nums containsObject:@(phonemeValue)]){
+            NSLog(@"level 3 phoneme %d", phonemeValue);
+            write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+            [NSSound setSystemVolume:0.0];
+        }
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+            [NSSound setSystemVolume:1.0];
+        }
+    }
     if ([LevelSelector indexOfSelectedItem] == 4) {
-        for (int i=0 ; i<20 ; i++){
-            if (level4nums[i] == phonemeValue){
-                NSLog(@"level 4 phoneme %d", phonemeValue);
-                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }
-        }}
+        if ([level4nums containsObject:@(phonemeValue)]){
+            NSLog(@"level 4 phoneme %d", phonemeValue);
+            write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+        }
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+        }
+    }
     if ([LevelSelector indexOfSelectedItem] == 5) {
-        for (int i=0 ; i<24 ; i++){
-            if (level5nums[i] == phonemeValue){
-                NSLog(@"level 5 phoneme %d", phonemeValue);
-                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }
-        }}
+        if ([level5nums containsObject:@(phonemeValue)]){
+            NSLog(@"level 5 phoneme %d", phonemeValue);
+            write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+        }
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+        }
+    }
     if ([LevelSelector indexOfSelectedItem] == 6) {
-        for (int i=0 ; i<28 ; i++){
-            if (level6nums[i] == phonemeValue){
-                NSLog(@"level 6 phoneme %d", phonemeValue);
-                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }
-        }}
+        if ([level6nums containsObject:@(phonemeValue)]){
+            NSLog(@"level 6 phoneme %d", phonemeValue);
+            write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+        }
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+        }
+    }
     if ([LevelSelector indexOfSelectedItem] == 7) {
-        for (int i=0 ; i<32 ; i++){
-            if (level7nums[i] == phonemeValue){
-                NSLog(@"level 7 phoneme %d", phonemeValue);
-                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }
-        }}
+        if ([level7nums containsObject:@(phonemeValue)]){
+            NSLog(@"level 7 phoneme %d", phonemeValue);
+            write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+        }
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+        }
+    }
     if ([LevelSelector indexOfSelectedItem] == 8) {
-        for (int i=0 ; i<36 ; i++){
-            if (level8nums[i] == phonemeValue){
-                NSLog(@"level 8 phoneme %d", phonemeValue);
-                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }
-        }}
+        if ([level8nums containsObject:@(phonemeValue)]){
+            NSLog(@"level 8 phoneme %d", phonemeValue);
+            write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+        }
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+        }
+    }
     if ([LevelSelector indexOfSelectedItem] == 9) {
-        for (int i=0 ; i<39 ; i++){
-            if (level9nums[i] == phonemeValue){
-                NSLog(@"level 9 phoneme %d", phonemeValue);
-                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-            }}}
+        if ([level9nums containsObject:@(phonemeValue)]){
+            NSLog(@"level 9 phoneme %d", phonemeValue);
+            write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+        }
+        else {write(serialFileDescriptor, (const void *) &val, 1);
+        }
+    }
 
+//    if ([LevelSelector indexOfSelectedItem] == 1) {
+//        for (int i=0 ; i<9 ; i++){
+//            if (level1nums[i] == @(phonemeValue)){
+//                NSLog(@"level 1 phoneme %d", phonemeValue);
+//                write(serialFileDescriptor, (const void *) &phonemeValue, 1);
+//                i =9;
+//            }
+//            if ( i == 9 && level1nums[i] != phonemeValue){
+//                
+//            write(serialFileDescriptor, (const void *) &val, 1);
+//            }
+//        }}
 }
+
 
 
 - (void)setExpressionForWord:(NSNumber *)phoneme {
     
     int phonemeValue = [phoneme shortValue];
-    NSLog(@"%d", phonemeValue);
-    
     
     NSDictionary *PhonToWord = @{
                                  @"about" : @5,
-                                 @"din" : @8,
-                                 @"bit" : @6,
-                                 @"beet" : @20,
+                                 @"din" : @20,
+                                 @"bit" : @8,
+                                 @"beet" : @6,
                                  @"nap" : @29,
                                  @"ran" : @32,
                                  @"sin" : @33,
                                  @"tin" : @35,
+                                 
                                  @"roses" : @10,
                                  @"limb" : @27,
                                  @"mat" : @28,
@@ -1831,34 +1881,46 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                                  @"bud" : @14,
                                  @"kin" : @26,
                                  @"bat" : @2,
-                                 @"wet" : @28,
+                                 @"wet" : @38,
                                  @"them" : @21,
+                                 
                                  @"hat" : @24,
                                  @"caught" : @4,
                                  @"father" : @11,
                                  @"van" : @37,
                                  @"pin" : @31,
                                  @"broot" : @12,
-                                 @"fin" : @15,
-                                 @"bin" : @22,
-                                 @"beet" : @18,
+                                 @"fin" : @22,
+                                 @"bin" : @18,
+                                 @"boat" : @15,
+                                 
                                  @"bait" : @3,
-                                 @"tang" : @16,
-                                 @"shin" : @30,
-                                 @"bout" : @34,
-                                 @"thin" : @13,
+                                 @"tang" : @30,
+                                 @"shin" : @34,
+                                 @"bout" : @16,
+                                 
+                                 @"thin" : @36,
                                  @"gain" : @23,
-                                 @"yet" : @36,
-                                 @"book" : @39,
+                                 @"yet" : @39,
+                                 
+                                 @"book" : @13,
                                  @"boy" : @17,
-                                 @"measure" : @38,
-                                 @"wet" : @41,
+                                 @"measure" : @41,
+                                 @"wet" : @38,
                                  };
-    if (PhonToWord[word] == @(phonemeValue)){
-        NSLog(@"merda");
-        NSLog(@"phoneme di merda %d", phonemeValue);
+    
+    if (@(phonemeValue) == PhonToWord[word]){
         write(serialFileDescriptor, (const void *) &phonemeValue, 1);
-    }}
+        NSLog(@" sent %d", phonemeValue);
+    }
+    
+    else{
+        int val = 0;
+        write(serialFileDescriptor, (const void *) &val, 1);
+        
+        
+    }
+}
 
 
 
@@ -1873,7 +1935,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     phonemeBeingTested = phonemesToTest[numb];
     NSString *correctButtonStr = [NSString stringWithFormat:@"%d", correctButton];
     testButtons = [NSMutableDictionary
-                                        dictionaryWithDictionary:@{}];
+                   dictionaryWithDictionary:@{}];
     [phonemesToTest removeObject: phonemeBeingTested];
     for ( int i = 0; i < 8; i++){
         //levelsize = [phonemesToTest count] - 1;
@@ -1922,46 +1984,46 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                       kSpeechVolumeProperty,
                       (__bridge CFTypeRef)(@(1.0)));
     NSDictionary *PhonToWord = @{
-     @"AX" : @"about",
-     @"d" : @"din",
-     @"IH" : @"bit",
-     @"IY" : @"beet",
-     @"n" : @"nap",
-     @"r" : @"ran",
-     @"s" : @"sin",
-     @"t" : @"tin",
-     @"IX" : @"roses",
-     @"l" : @"limb",
-     @"m" : @"mat",
-     @"AY" : @"bite",
-     @"z" : @"zoo",
-     @"EH" : @"bet",
-     @"UX" : @"bud",
-     @"k" : @"kin",
-     @"AE" : @"bat",
-     @"w" : @"wet",
-     @"D" : @"them",
-     @"h" : @"hat",
-     @"AO" : @"caught",
-     @"AA" : @"father",
-     @"v" : @"van",
-     @"p" : @"pin",
-     @"UW" : @"broot",
-     @"f" : @"fin",
-     @"b" : @"bin",
-     @"OW" : @"beet",
-     @"EY" : @"bait",
-     @"N" : @"tang",
-     @"S" : @"shin",
-     @"AW" : @"bout",
-     @"T" : @"thin",
-     @"g" : @"gain",
-     @"y" : @"yet",
-     @"UH" : @"book",
-     @"OY" : @"boy",
-     @"Z" : @"measure",
-     @"w" : @"wet",
-     };
+                                 @"AX" : @"about",
+                                 @"d" : @"din",
+                                 @"IH" : @"bit",
+                                 @"IY" : @"beet",
+                                 @"n" : @"nap",
+                                 @"r" : @"ran",
+                                 @"s" : @"sin",
+                                 @"t" : @"tin",
+                                 @"IX" : @"roses",
+                                 @"l" : @"limb",
+                                 @"m" : @"mat",
+                                 @"AY" : @"bite",
+                                 @"z" : @"zoo",
+                                 @"EH" : @"bet",
+                                 @"UX" : @"bud",
+                                 @"k" : @"kin",
+                                 @"AE" : @"bat",
+                                 @"w" : @"wet",
+                                 @"D" : @"them",
+                                 @"h" : @"hat",
+                                 @"AO" : @"caught",
+                                 @"AA" : @"father",
+                                 @"v" : @"van",
+                                 @"p" : @"pin",
+                                 @"UW" : @"broot",
+                                 @"f" : @"fin",
+                                 @"b" : @"bin",
+                                 @"OW" : @"beet",
+                                 @"EY" : @"bait",
+                                 @"N" : @"tang",
+                                 @"S" : @"shin",
+                                 @"AW" : @"bout",
+                                 @"T" : @"thin",
+                                 @"g" : @"gain",
+                                 @"y" : @"yet",
+                                 @"UH" : @"book",
+                                 @"OY" : @"boy",
+                                 @"Z" : @"measure",
+                                 @"w" : @"wet",
+                                 };
     if (![sender isKindOfClass:[NSButton class]])
         return;
     NSString *tite = [(NSButton *)sender title];
@@ -1969,7 +2031,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     NSString *CorrespPhon = testButtons[tite];
     NSString *TestWord = PhonToWord[CorrespPhon];
     [self startSpeakingWordButton: TestWord];
-    }
+}
 
 
 - (IBAction)StartTest:(id)sender {
@@ -2002,18 +2064,18 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 //CLEAR DICTIONARY
 
-        
-   // NSString *word = [(NSButton *)sender title];
-   // [self startSpeakingWordButton:word];}
+
+// NSString *word = [(NSButton *)sender title];
+// [self startSpeakingWordButton:word];}
 
 
 - (IBAction)wordButton:(id)sender {
     
-//    if([LevelSelector indexOfSelectedItem] <= 2)
-//    {
-//        [sender setEnabled:NO];
-//    }
-//    
+    //    if([LevelSelector indexOfSelectedItem] <= 2)
+    //    {
+    //        [sender setEnabled:NO];
+    //    }
+    //
     if (![sender isKindOfClass:[NSButton class]])
         return;
     word = [(NSButton *)sender title];
@@ -2117,7 +2179,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  OurErrorCFCallBackProc
-
+ 
  Called by speech channel when an error occurs during processing of text to speak.
  ----------------------------------------------------------------------------------------*/
 static void OurErrorCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, CFErrorRef inCFErrorRef) {
@@ -2133,7 +2195,7 @@ static void OurErrorCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefC
 
 /*----------------------------------------------------------------------------------------
  OurTextDoneCallBackProc
-
+ 
  Called by speech channel when all text has been processed.	Additional text can be
  passed back to continue processing.
  ----------------------------------------------------------------------------------------*/
@@ -2155,7 +2217,7 @@ static void OurTextDoneCallBackProc(SpeechChannel	inSpeechChannel,
 
 /*----------------------------------------------------------------------------------------
  OurSpeechDoneCallBackProc
-
+ 
  Called by speech channel when all speech has been generated.
  ----------------------------------------------------------------------------------------*/
 static void OurSpeechDoneCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon) {
@@ -2169,7 +2231,7 @@ static void OurSpeechDoneCallBackProc(SpeechChannel inSpeechChannel, SRefCon inR
 
 /*----------------------------------------------------------------------------------------
  OurSyncCallBackProc
-
+ 
  Called by speech channel when it encouters a synchronization command within an
  embedded speech comand in text being processed.
  ----------------------------------------------------------------------------------------*/
@@ -2186,14 +2248,17 @@ static void OurSyncCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon,
 
 /*----------------------------------------------------------------------------------------
  OurPhonemeCallBackProc
-
+ 
  Called by speech channel every time a phoneme is about to be generated.	 You might use
  this to animate a speaking character.
  ----------------------------------------------------------------------------------------*/
 static void OurPhonemeCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode) {
     @autoreleasepool {
         SpeakingTextWindow *stw = (__bridge SpeakingTextWindow *)inRefCon;
-        //if ([stw shouldDisplayPhonemeCallbacks]) {
+        //        //if ([stw shouldDisplayPhonemeCallbacks]) {
+        //        SetSpeechProperty(inSpeechChannel,
+        //                          kSpeechVolumeProperty,
+        //                          (__bridge CFTypeRef)(@(0.0)));
         [stw performSelectorOnMainThread:@selector(setExpressionForPhoneme:)
          //[[stw characterView] performSelectorOnMainThread:@selector(setExpressionForPhoneme:)
                               withObject:@(inPhonemeOpcode)
@@ -2241,7 +2306,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 /*----------------------------------------------------------------------------------------
  OurWordCallBackProc2
-
+ 
  Called by speech channel every time a word is about to be generated.  This program
  uses this callback to highlight the currently spoken word.
  ----------------------------------------------------------------------------------------*/

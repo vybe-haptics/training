@@ -26,6 +26,8 @@
 		534806FA1B2F56BD00620ECD /* CocoaSpeechSynthesisExample.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 534806F91B2F56BD00620ECD /* CocoaSpeechSynthesisExample.entitlements */; };
 		538989500BA87C1D0040EBBD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		538989510BA87C1D0040EBBD /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00FA9A72FF714A0C11CA1586 /* ApplicationServices.framework */; };
+		BABEFBFF1C29FE780012D64D /* ISSoundAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BABEFBFE1C29FE780012D64D /* ISSoundAdditions.m */; };
+		BABEFC011C29FE840012D64D /* ISSoundAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = BABEFC001C29FE840012D64D /* ISSoundAdditions.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +55,8 @@
 		534806F71B2F568500620ECD /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		534806F91B2F56BD00620ECD /* CocoaSpeechSynthesisExample.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = CocoaSpeechSynthesisExample.entitlements; path = CocoaSpeechSynthesisExample/CocoaSpeechSynthesisExample.entitlements; sourceTree = "<group>"; };
 		538989590BA87C1D0040EBBD /* CocoaSpeechSynthesisExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaSpeechSynthesisExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BABEFBFE1C29FE780012D64D /* ISSoundAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISSoundAdditions.m; sourceTree = "<group>"; };
+		BABEFC001C29FE840012D64D /* ISSoundAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISSoundAdditions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				BABEFBFE1C29FE780012D64D /* ISSoundAdditions.m */,
+				BABEFC001C29FE840012D64D /* ISSoundAdditions.h */,
 				534806D21B2F562000620ECD /* SpeakingTextWindow.h */,
 				534806D31B2F562000620ECD /* SpeakingTextWindow.m */,
 				534806D01B2F562000620ECD /* SpeakingCharacterView.h */,
@@ -171,6 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				534806D41B2F562000620ECD /* SpeakingCharacterView.h in Headers */,
+				BABEFC011C29FE840012D64D /* ISSoundAdditions.h in Headers */,
 				534806D61B2F562000620ECD /* SpeakingTextWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				534806D51B2F562000620ECD /* SpeakingCharacterView.m in Sources */,
+				BABEFBFF1C29FE780012D64D /* ISSoundAdditions.m in Sources */,
 				534806DC1B2F563A00620ECD /* CocoaSpeechSynthesisExample_main.m in Sources */,
 				534806D71B2F562000620ECD /* SpeakingTextWindow.m in Sources */,
 			);
