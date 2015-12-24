@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CocoaSpeechSynthesisExample/SpeakingTextWindow.m"
-            timestampString = "472176891.709796"
+            timestampString = "472607769.880843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "523"
-            endingLineNumber = "523"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
             landmarkName = "-WordToPhon:"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CocoaSpeechSynthesisExample/SpeakingTextWindow.m"
-            timestampString = "471847060.241523"
+            timestampString = "472607769.880843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
             landmarkName = "@interface SpeakingTextWindow()"
             landmarkType = "2">
          </BreakpointContent>
