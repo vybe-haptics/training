@@ -110,8 +110,9 @@
     IBOutlet NSTextField *fAllAnswers;
     int totalAttempts;
     NSString *word;
-    int *attempt;
+    //int *attempt;
     NSMutableArray *phonemesAlreadyTested;
+    float SystemVol;
     
     //serial example code start
     IBOutlet NSPopUpButton *serialListPullDown;
@@ -1553,7 +1554,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     
     //  [[wordButton self ] setEnabled:NO];
     
-    
+    SystemVol = 0.5;
     
     
     //serial example code start
@@ -1771,13 +1772,13 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 //                              (__bridge CFTypeRef)(@(1.0)));}
 //            //[NSSound setSystemVolume:1.0];}
     
-    NSLog(@"phoneme %d", phonemeValue);
-    [NSSound setSystemVolume:1.0];
+    //NSLog(@"phoneme %d", phonemeValue);
+    [NSSound setSystemVolume:SystemVol];
     int val = 0;
     
     if ([LevelSelector indexOfSelectedItem] == 1) {
         if ([level1nums containsObject:@(phonemeValue)]){
-                NSLog(@"level 1 phoneme %d", phonemeValue);
+                //NSLog(@"level 1 phoneme %d", phonemeValue);
                 write(serialFileDescriptor, (const void *) &phonemeValue, 1);
             }
         else {write(serialFileDescriptor, (const void *) &val, 1);
@@ -1785,7 +1786,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
     if ([LevelSelector indexOfSelectedItem] == 2) {
         if ([level2nums containsObject:@(phonemeValue)]){
-            NSLog(@"level 2 phoneme %d", phonemeValue);
+            //NSLog(@"level 2 phoneme %d", phonemeValue);
             write(serialFileDescriptor, (const void *) &phonemeValue, 1);
             
         }
@@ -1795,7 +1796,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
     if ([LevelSelector indexOfSelectedItem] == 3) {
         if ([level3nums containsObject:@(phonemeValue)]){
-            NSLog(@"level 3 phoneme %d", phonemeValue);
+            //NSLog(@"level 3 phoneme %d", phonemeValue);
             write(serialFileDescriptor, (const void *) &phonemeValue, 1);
             
         }
@@ -1805,7 +1806,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
     if ([LevelSelector indexOfSelectedItem] == 4) {
         if ([level4nums containsObject:@(phonemeValue)]){
-            NSLog(@"level 4 phoneme %d", phonemeValue);
+            //NSLog(@"level 4 phoneme %d", phonemeValue);
             write(serialFileDescriptor, (const void *) &phonemeValue, 1);
         }
         else {write(serialFileDescriptor, (const void *) &val, 1);
@@ -1813,7 +1814,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
     if ([LevelSelector indexOfSelectedItem] == 5) {
         if ([level5nums containsObject:@(phonemeValue)]){
-            NSLog(@"level 5 phoneme %d", phonemeValue);
+            //NSLog(@"level 5 phoneme %d", phonemeValue);
             write(serialFileDescriptor, (const void *) &phonemeValue, 1);
         }
         else {write(serialFileDescriptor, (const void *) &val, 1);
@@ -1821,7 +1822,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
     if ([LevelSelector indexOfSelectedItem] == 6) {
         if ([level6nums containsObject:@(phonemeValue)]){
-            NSLog(@"level 6 phoneme %d", phonemeValue);
+            //NSLog(@"level 6 phoneme %d", phonemeValue);
             write(serialFileDescriptor, (const void *) &phonemeValue, 1);
         }
         else {write(serialFileDescriptor, (const void *) &val, 1);
@@ -1829,7 +1830,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
     if ([LevelSelector indexOfSelectedItem] == 7) {
         if ([level7nums containsObject:@(phonemeValue)]){
-            NSLog(@"level 7 phoneme %d", phonemeValue);
+            //NSLog(@"level 7 phoneme %d", phonemeValue);
             write(serialFileDescriptor, (const void *) &phonemeValue, 1);
         }
         else {write(serialFileDescriptor, (const void *) &val, 1);
@@ -1837,7 +1838,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
     if ([LevelSelector indexOfSelectedItem] == 8) {
         if ([level8nums containsObject:@(phonemeValue)]){
-            NSLog(@"level 8 phoneme %d", phonemeValue);
+            //NSLog(@"level 8 phoneme %d", phonemeValue);
             write(serialFileDescriptor, (const void *) &phonemeValue, 1);
         }
         else {write(serialFileDescriptor, (const void *) &val, 1);
@@ -1845,7 +1846,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     }
     if ([LevelSelector indexOfSelectedItem] == 9) {
         if ([level9nums containsObject:@(phonemeValue)]){
-            NSLog(@"level 9 phoneme %d", phonemeValue);
+            //NSLog(@"level 9 phoneme %d", phonemeValue);
             write(serialFileDescriptor, (const void *) &phonemeValue, 1);
         }
         else {write(serialFileDescriptor, (const void *) &val, 1);
@@ -1904,7 +1905,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //            //[NSSound setSystemVolume:1.0];}
     
     NSLog(@"phoneme %d", phonemeValue);
-    [NSSound setSystemVolume:1.0];
+    [NSSound setSystemVolume:SystemVol];
     int val = 0;
     int silencingProb = arc4random_uniform(10);
     int silencing = 5;
@@ -1917,7 +1918,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0]; }
+            [NSSound setSystemVolume:SystemVol]; }
     }
     if ([LevelSelector indexOfSelectedItem] == 2) {
         if ([level2nums containsObject:@(phonemeValue)]){
@@ -1926,7 +1927,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0];
+            [NSSound setSystemVolume:SystemVol];
         }
     }
     if ([LevelSelector indexOfSelectedItem] == 3) {
@@ -1936,7 +1937,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0];
+            [NSSound setSystemVolume:SystemVol];
         }
     }
     if ([LevelSelector indexOfSelectedItem] == 4) {
@@ -1946,7 +1947,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0];}
+            [NSSound setSystemVolume:SystemVol];}
     }
     if ([LevelSelector indexOfSelectedItem] == 5) {
         if ([level5nums containsObject:@(phonemeValue)]){
@@ -1955,7 +1956,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0];
+            [NSSound setSystemVolume:SystemVol];
         }
     }
     if ([LevelSelector indexOfSelectedItem] == 6) {
@@ -1965,7 +1966,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0];
+            [NSSound setSystemVolume:SystemVol];
         }
     }
     if ([LevelSelector indexOfSelectedItem] == 7) {
@@ -1975,7 +1976,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0];
+            [NSSound setSystemVolume:SystemVol];
         }
     }
     if ([LevelSelector indexOfSelectedItem] == 8) {
@@ -1985,7 +1986,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0];
+            [NSSound setSystemVolume:SystemVol];
         }
     }
     if ([LevelSelector indexOfSelectedItem] == 9) {
@@ -1996,7 +1997,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             if ([SilencingCheckboxButton state] == NSOnState && silencingProb < silencing){
                 [NSSound setSystemVolume:0.0];}}
         else {write(serialFileDescriptor, (const void *) &val, 1);
-            [NSSound setSystemVolume:1.0];
+            [NSSound setSystemVolume:SystemVol];
         }
     }
     
@@ -2066,7 +2067,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
                                  @"measure" : @41,
                                  @"wet" : @38,
                                  };
-    [NSSound setSystemVolume:1.0];
+    [NSSound setSystemVolume:SystemVol];
     
     if (@(phonemeValue) == PhonToWord[word]){
         write(serialFileDescriptor, (const void *) &phonemeValue, 1);
@@ -2116,10 +2117,11 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //            numb = levelsize - atter - 1;}
     //
     //    }
-    
+    NSLog(@"fick");
     int levelsize = [phonemesToTest count];
     int correctButton = arc4random_uniform(8);
     int prob = arc4random_uniform(10);
+    NSLog(@"prob %d", prob);
     int numb;
     int LevelInt = [Level intValue];
     if (LevelInt > 1 && prob < 4){
@@ -2249,7 +2251,7 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 
 
 - (IBAction)StartTest:(id)sender {
-    attempt = 0;
+    //attempt = 0;
     //set answerSelector to list of phonemes being tested
     NSArray *Answs = [[NSArray alloc]initWithObjects:@" ", @"1", @"2", @"3", @"4" , @"5", @"6", @"7", @"8", nil];
     [answerSelector removeAllItems];
@@ -2268,31 +2270,29 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 - (IBAction)SelectedAnswer:(id)sender {
     NSString *answer =[answerSelector titleOfSelectedItem];
     
-    if (attempt < 10){
-        [phonemesAlreadyTested removeAllObjects];
-        if (wrongAnswers == 3){
-            attempt=10;}
+    if (totalAttempts < 10){
         if (testButtons[answer] == phonemeBeingTested){
             correctAnswers ++;
             totalAttempts = correctAnswers + wrongAnswers;
             [fLastAnswer setStringValue:@"Correct!"];
-            [fAllAnswers setStringValue:[NSString stringWithFormat: @"%d Correct / %d Attempted", correctAnswers,  totalAttempts]];
-        }
+            [fAllAnswers setStringValue:[NSString stringWithFormat: @"%d Correct / %d Attempted", correctAnswers,  totalAttempts]];}
         else {
             wrongAnswers ++;
             NSLog(@"its in the wrong");
             totalAttempts = correctAnswers + wrongAnswers;
             [fLastAnswer setStringValue:@"Wrong!"];
-            [fAllAnswers setStringValue:[NSString stringWithFormat: @"%d Correct / %d Attempted", correctAnswers,  totalAttempts]];
-        }
-        attempt ++;
+            [fAllAnswers setStringValue:[NSString stringWithFormat: @"%d Correct / %d Attempted", correctAnswers,  totalAttempts]];}
+        if (wrongAnswers == 3){
+            [phonemesAlreadyTested removeAllObjects];
+            totalAttempts=10;
+            [fAllAnswers setStringValue:[NSString stringWithFormat: @"Test failed."]];}
+
+        //totalAttempts ++;
         NSString * zStr =
         [NSString stringWithContentsOfFile:@"/Users/Isabella/Desktop/VybeLog.txt"
                                   encoding:NSASCIIStringEncoding
                                      error:NULL];
-        [self AssignTestButtons:zStr];
-    }
-    
+        [self AssignTestButtons:zStr];}
     
     if ( correctAnswers >= 8 ){
         [fAllAnswers setStringValue:[NSString stringWithFormat: @"Congrats! you passed"]];
@@ -2306,13 +2306,9 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         zStr = [NSString stringWithFormat:@"%d", valuezStr];
         [zStr writeToFile:@"/Users/Isabella/Desktop/VybeLog.txt"
                atomically:YES
-                 encoding:NSASCIIStringEncoding error:NULL];
-        
-        
-        
-        
-        
-    }}
+                 encoding:NSASCIIStringEncoding error:NULL];}
+    NSLog(@"attempts %d, correctAnswers %d, wrongAnswers %d", totalAttempts, wrongAnswers, correctAnswers);
+                }
 
 
 //CLEAR DICTIONARY
