@@ -71,7 +71,7 @@ void setup() {
   int index = random(0, 44);
   while (!Serial) ;
   Serial.println("DRV test");
-  uint8_t motor_ids[6] = {0, 1, 4, 5, 6, 7};
+  uint8_t motor_ids[6] = {0, 1, 2, 3, 4, 6};
   for (  uint8_t motor_ids_index = 0; motor_ids_index < 1 + sizeof(motor_ids); motor_ids_index++) {
     tcaselect(motor_ids[motor_ids_index]);
     drv.begin();
