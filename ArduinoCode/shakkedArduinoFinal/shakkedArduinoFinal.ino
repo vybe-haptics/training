@@ -17,51 +17,46 @@ uint8_t off[] = {0x00};
 uint8_t* lib[][6] = {
   {off, off, off, off, off, off},//0
   {off, off, off, off, off, off},//1
-  {A, off, off, off, off, off},//2
-  {off, A, off, off, off, off},//3
-  {off, off, A, off, off, off},//4
+  {off, off, A, off, off, A},//2
+  {A, off, off, A, A, off},//3
+  {A, A, off, off, off, A},//4
   {off, off, off, A, off, off},//5
-  {off, off, off, off, A, off},//6
-  {off, off, off, off, off, A},//7
-  {A, A, off, off, off, off},//8
-  {A, off, A, off, off, off},//9
-  {A, off, off, A, off, off},//10
-  {A, off, off, off, A, off},//11
-  {A, off, off, off, off, A},//12
-  {off, A, A, off, off, off},//13
+  {A, off, off, A, off, off},//6
+  {off, A, off, off, off, A},//7
+  {off, off, off, off, A, off},//8
+  {off, A, A, off, off, off},//9
+  {A, off, A, off, off, off},//10
+  {A, off, A, A, off, off},//11
+  {off, A, off, off, A, off},//12
+  {off, A, off, A, A, off},//13
   {off, A, A, off, off, off},//14
-  {off, A, off, A, off, off},//15
-  {off, A, off, off, A, off},//16
-  {off, A, off, off, off, A},//17
-  {off, off, A, A, off, off},//18
-  {off, off, A, off, A, off},//19
-  {off, off, A, off, off, A},//20
+  {A, off, A, off, off, A},//15
+  {off, A, A, A, off, off},//16
+  {off, off, A, A, A, off},//17
+  {A, A, off, off, A, off},//18
+  {off, A, A, off, off, A},//19
+  {off, off, off, off, off, A},//20
   {off, off, off, A, A, off},//21
-  {off, off, off, A, off, A},//22
-  {off, off, off, off, A, A},//23
-  {A, A, A, off, off, off},//24
-  {A, A, off, A, off, off},//25
-  {A, A, off, off, A, off},//26
-  {A, A, off, off, off, A},//27
-  {A, off, A, A, off, off},//28
-  {A, off, A, off, A, off},//29
-  {A, off, A, off, off, A},//30
-  {A, off, off, A, A, off},//31
-  {A, off, off, A, off, A},//32
-  {A, off, off, off, A, A},//33
-  {off, A, A, A, off, off},//34
-  {off, A, A, off, A, off},//35
-  {off, A, A, off, off, A},//36
-  {off, A, off, A, A, off},//37
-  {off, A, off, A, off, A},//38
-  {off, A, off, off, A, A},//39
-  {off, off, A, A, A, off},//40
-  {off, off, A, A, off, A},//41
-  {off, off, A, off, A, A},//42
-  {off, off, off, A, A, A},//43
-  {A, A, A, A, off, off},//44
-  {A, A, A, off, off, A},//45
-  {A, A, off, A, off, A},//46
+  {A, A, off, A, off, off},//22
+  {A, off, off, off, A, A},//23
+  {off, off, off, A, off, A},//24
+  {off, A, off, off, A, A},//25
+  {off, off, A, A, off, off},//26
+  {A, off, off, off, A, off},//27
+  {A, off, off, off, off, A},//28
+  {off, A, off, off, off, off},//29
+  {A, off, A, off, A, off},//30
+  {A, A, A, off, off, off},//31
+  {off, off, A, off, off, off},//32
+  {A, A, off, off, off, off},//33
+  {A, off, off, A, off, A},//34
+  {A, off, off, off, off, off},//35
+  {off, A, off, A, off, A},//36
+  {off, off, off, off, A, A},//37
+  {off, A, off, A, off, off},//38
+  {off, A, A, off, A, off},//39
+  {off, off, A, off, A, off},//40
+  {off, off, A, A, off, A}//41
 };
 uint8_t** current_lib;
 
