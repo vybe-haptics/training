@@ -2291,7 +2291,8 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         [NSString stringWithContentsOfFile:@"/Users/shakkedhalperin/Desktop/VybeLog.txt"
                                   encoding:NSASCIIStringEncoding
                                      error:NULL];
-        [self AssignTestButtons:zStr];}
+        if (correctAnswers < 8){
+            [self AssignTestButtons:zStr];}}
     
     if ( correctAnswers >= 8 ){
         [fAllAnswers setStringValue:[NSString stringWithFormat: @"Congrats! you passed"]];
