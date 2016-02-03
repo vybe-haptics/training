@@ -2189,7 +2189,10 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         NSLog(@"%@", testButtons[tite]);
         NSString *wrPhonemeToSpeak = testButtons[tite];
         NSLog(testButtons[tite]);
-        [self startSpeakingButton: wrPhonemeToSpeak];
+        SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModePhoneme);
+        
+        SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)wrPhonemeToSpeak, NULL);
+        
     }
 }
 
@@ -2245,7 +2248,8 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //[self AssignTestButtons:[LevelSelector indexOfSelectedItem]];
     NSString *CorrespPhon = testButtons[tite];
     NSString *TestWord = PhonToWord[CorrespPhon];
-    [self startSpeakingWordButton: TestWord];
+    SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModeText);
+    SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)TestWord, NULL);
 }
 
 
