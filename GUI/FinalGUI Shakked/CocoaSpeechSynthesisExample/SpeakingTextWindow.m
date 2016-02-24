@@ -189,6 +189,8 @@ static void  OurSpeechDoneCallBackProc(SpeechChannel inSpeechChannel, SRefCon in
 static void  OurSyncCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, OSType inSyncMessage);
 static void  OurPhonemeCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode);
 
+static void  NoPhonemeCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode);
+
 static void  OurPhonemeCallBackProcTwo(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode);
 
 static void  OurPhonemeCallBackProcThree(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode);
@@ -2104,18 +2106,6 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         phonemesToTest = [[NSMutableArray alloc]initWithObjects: @"AX", @"d", @"IH", @"IY",@"n",@"r",@"s", @"t", @"IX", @"l", @"m", @"AY", @"z", @"EH", @"UX", @"k",@"AE", @"w", @"D", @"h", @"AO", @"AA", @"v", @"p", @"UW", @"f", @"b", @"OW", @"EY", @"N", @"S", @"AW", @"T", @"g", @"y", @"UH", nil];}
     if([Level  isEqual: @"9"]){
         phonemesToTest = [[NSMutableArray alloc]initWithObjects: @"AX", @"d", @"IH", @"IY",@"n",@"r",@"s", @"t", @"IX", @"l", @"m", @"AY", @"z", @"EH", @"UX", @"k",@"AE", @"w", @"D", @"h", @"AO", @"AA", @"v", @"p", @"UW", @"f", @"b", @"OW", @"EY", @"N", @"S", @"AW", @"T", @"g", @"y", @"UH", @"OY",@"Z", @"w", nil];}
-    //    int levelsize = [phonemesToTest count];
-    //    int correctButton = arc4random_uniform(8);
-    //    int prob = arc4random_uniform(10);
-    //    int numb=arc4random_uniform(levelsize);
-    //    int Levelint = [Level intValue];
-    //    NSLog(@"%d", Levelint);
-    //    if (Levelint >= 2){
-    //        if (prob < 10){
-    //            int atter = arc4random_uniform(4);
-    //            numb = levelsize - atter - 1;}
-    //
-    //    }
     NSLog(@"fick");
     int levelsize = [phonemesToTest count];
     int correctButton = arc4random_uniform(8);
@@ -2142,9 +2132,16 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     else{
         numb = arc4random_uniform(levelsize);
         phonemeBeingTested = phonemesToTest[numb];
+        if (LevelInt ==  1 && [phonemesAlreadyTested count] < 8){
         while ([phonemesAlreadyTested containsObject:phonemeBeingTested]) {
+            NSLog(@"counted %d",[phonemesAlreadyTested count]);
             phonemeBeingTested = phonemesToTest[arc4random_uniform(levelsize)];
-        }
+        }}
+        if (LevelInt >  1 ){
+            while ([phonemesAlreadyTested containsObject:phonemeBeingTested]) {
+                NSLog(@"counted %d",[phonemesAlreadyTested count]);
+                phonemeBeingTested = phonemesToTest[arc4random_uniform([phonemesToTest count])];
+            }}
         
         //int atter = arc4random_uniform(4);
         //numb = levelsize - atter - 1;}
@@ -2176,6 +2173,8 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //[self AssignTestButtons:[LevelSelector indexOfSelectedItem]];
     NSLog(tite);
     if ([tite isEqualToString:@"vybe"]){
+        SetSpeechProperty(fCurSpeechChannel, kSpeechPhonemeCallBack,
+                          (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)OurPhonemeCallBackProc)));
         SetSpeechProperty(fCurSpeechChannel,
                           kSpeechVolumeProperty,
                           (__bridge CFTypeRef)(@(0.0)));
@@ -2183,13 +2182,18 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
         NSLog(phonemeBeingTested);
         [self startSpeakingButton:phonemeBeingTested];}
     else{
+        SetSpeechProperty(fCurSpeechChannel, kSpeechPhonemeCallBack,
+                          (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)NoPhonemeCallBackProc)));
         SetSpeechProperty(fCurSpeechChannel,
                           kSpeechVolumeProperty,
                           (__bridge CFTypeRef)(@(1.0)));
         NSLog(@"%@", testButtons[tite]);
         NSString *wrPhonemeToSpeak = testButtons[tite];
         NSLog(testButtons[tite]);
-        [self startSpeakingButton: wrPhonemeToSpeak];
+        SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModePhoneme);
+        
+        SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)wrPhonemeToSpeak, NULL);
+        
     }
 }
 
@@ -2245,7 +2249,10 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
     //[self AssignTestButtons:[LevelSelector indexOfSelectedItem]];
     NSString *CorrespPhon = testButtons[tite];
     NSString *TestWord = PhonToWord[CorrespPhon];
-    [self startSpeakingWordButton: TestWord];
+    SetSpeechProperty(fCurSpeechChannel, kSpeechPhonemeCallBack,
+                      (__bridge CFTypeRef)(@(fSavingToFile ? (long)NULL : (long)NoPhonemeCallBackProc)));
+    SetSpeechProperty(fCurSpeechChannel, kSpeechInputModeProperty, kSpeechModeText);
+    SpeakCFString(fCurSpeechChannel, (__bridge CFStringRef)TestWord, NULL);
 }
 
 
@@ -2269,7 +2276,6 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
 - (IBAction)SelectedAnswer:(id)sender {
     NSString *answer =[answerSelector titleOfSelectedItem];
     
-    if (totalAttempts < 10){
         if (testButtons[answer] == phonemeBeingTested){
             correctAnswers ++;
             totalAttempts = correctAnswers + wrongAnswers;
@@ -2285,28 +2291,39 @@ static void OurWordCFCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCo
             [phonemesAlreadyTested removeAllObjects];
             totalAttempts=10;
             [fAllAnswers setStringValue:[NSString stringWithFormat: @"Test failed."]];}
+        
+        if ( correctAnswers == 8 ){
+            [fAllAnswers setStringValue:[NSString stringWithFormat: @"Congrats! you passed"]];
+            totalAttempts=10;
+            NSString * zStr =
+            [NSString stringWithContentsOfFile:@"/Users/shakkedhalperin/Desktop/VybeLog.txt"
+                                      encoding:NSASCIIStringEncoding
+                                         error:NULL];
+            
+            int valuezStr = [zStr intValue];
+            valuezStr++;
+            zStr = [NSString stringWithFormat:@"%d", valuezStr];
+            [zStr writeToFile:@"/Users/shakkedhalperin/Desktop/VybeLog.txt"
+                   atomically:YES
+                     encoding:NSASCIIStringEncoding error:NULL];}
+        
+        else if ([LevelSelector indexOfSelectedItem] == 1 && totalAttempts == 8) {
+            [phonemesAlreadyTested removeAllObjects];
+            totalAttempts=10;
+            [fAllAnswers setStringValue:[NSString stringWithFormat: @"Test failed."]];
+        }
+    
+        if (totalAttempts < 10){
 
         //totalAttempts ++;
         NSString * zStr =
         [NSString stringWithContentsOfFile:@"/Users/shakkedhalperin/Desktop/VybeLog.txt"
                                   encoding:NSASCIIStringEncoding
                                      error:NULL];
-        if (correctAnswers < 8){
-            [self AssignTestButtons:zStr];}}
-    
-    if ( correctAnswers >= 8 ){
-        [fAllAnswers setStringValue:[NSString stringWithFormat: @"Congrats! you passed"]];
-        NSString * zStr =
-        [NSString stringWithContentsOfFile:@"/Users/shakkedhalperin/Desktop/VybeLog.txt"
-                                  encoding:NSASCIIStringEncoding
-                                     error:NULL];
         
-        int valuezStr = [zStr intValue];
-        valuezStr++;
-        zStr = [NSString stringWithFormat:@"%d", valuezStr];
-        [zStr writeToFile:@"/Users/shakkedhalperin/Desktop/VybeLog.txt"
-               atomically:YES
-                 encoding:NSASCIIStringEncoding error:NULL];}
+        [self AssignTestButtons:zStr];}
+    
+   
     NSLog(@"attempts %d, correctAnswers %d, wrongAnswers %d", totalAttempts, wrongAnswers, correctAnswers);
                 }
 
@@ -2531,6 +2548,15 @@ static void OurPhonemeCallBackProcTwo(SpeechChannel inSpeechChannel, SRefCon inR
          //[[stw characterView] performSelectorOnMainThread:@selector(setExpressionForPhoneme:)
                               withObject:@(inPhonemeOpcode)
                            waitUntilDone:NO];
+    }
+}
+
+//} // OurPhonemeCallBackProcTwo
+
+static void NoPhonemeCallBackProc(SpeechChannel inSpeechChannel, SRefCon inRefCon, short inPhonemeOpcode) {
+    @autoreleasepool {
+        SpeakingTextWindow *stw = (__bridge SpeakingTextWindow *)inRefCon;
+
     }
 }
 
